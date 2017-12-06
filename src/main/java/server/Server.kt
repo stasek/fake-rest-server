@@ -18,7 +18,7 @@ class Server {
         val app = Javalin.start(port)
         val list = ResouceList().getResourceList()
         list.forEach(){
-            println("!!!")
+            logger.info(it.toString())
         }
 
     }

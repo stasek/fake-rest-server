@@ -1,6 +1,6 @@
 [
   {
-    "resource": "/api/",
+    "resource": "/api/hello/",
     "code": 200,
     "path": "hello.json",
     "method": "get"
