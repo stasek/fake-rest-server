@@ -4,5 +4,11 @@
     "code": 200,
     "path": "hello.json",
     "method": "get"
+  },
+  {
+    "resource": "/api/bye/",
+    "code": 200,
+    "path": "bye.json",
+    "method": "get"
   }
 ]

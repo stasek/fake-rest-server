@@ -1,5 +1,6 @@
 package server
 
+import elements.Metods
 import io.javalin.Javalin
 import org.slf4j.LoggerFactory
 import utils.jsonUtils.ResouceList
@@ -19,7 +20,13 @@ class Server {
         val list = ResouceList().getResourceList()
         list.forEach(){
             logger.info(it.toString())
+            when (it.method){
+                Metods.GET -> {
+                    app.get(it.resource) {ctx -> ctx.html(it.pathToJsonFile)}
+                }
+            }
         }
+
 
     }
 }
