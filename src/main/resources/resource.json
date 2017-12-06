@@ -1,0 +1,8 @@
+[
+  {
+    "resource": "/api/",
+    "code": 200,
+    "path": "hello.json",
+    "method": "get"
+  }
+]
