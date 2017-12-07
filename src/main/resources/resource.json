@@ -2,13 +2,20 @@
   {
     "resource": "/api/hello/",
     "code": 200,
-    "path": "hello.json",
+    "path": "/hello.json",
     "method": "get"
   },
   {
     "resource": "/api/bye/",
     "code": 200,
-    "path": "bye.json",
+    "path": "/bye.json",
     "method": "get"
+  },
+  {
+    "resource": "/api/file/",
+    "code": 200,
+    "path": "/file.jpg",
+    "method": "get",
+    "content-type": "binary"
   }
 ]

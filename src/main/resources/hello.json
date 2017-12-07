@@ -1,0 +1,7 @@
+{
+  "message": "Hello dude!",
+  "info":{
+    "name":"fake server",
+    "version": "dev"
+  }
+}
