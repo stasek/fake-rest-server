@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import elements.Entity
 import elements.ResourceEntity
 import io.javalin.Context
+import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
 import java.io.InputStream
 
@@ -25,5 +26,10 @@ fun Context.bodyToMap(): Map<String, String> {
 }
 
 fun readFile(name: String): InputStream {
-    return ResourceList::class.java.getResourceAsStream(name)
+    try {
+        return ResourceList::class.java.getResourceAsStream(name)
+    } catch (e: IllegalStateException){
+        logger.warn("Resource $name does not exist!", e)
+    }
+    return IOUtils.toInputStream("{\"file\":\"$name not exists\"}", "UTF-8")
 }

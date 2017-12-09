@@ -1,6 +1,5 @@
 package server
 
-import elements.ContentType
 import elements.Enums
 import elements.ResourceEntity
 import io.javalin.Context
@@ -23,7 +22,9 @@ class Server {
     }
 
     fun server(port: Int = 7000) {
+        logger.info("Server try start")
         val app = Javalin.start(port)
+        logger.info("Server working")
         val list = ResourceList().getResourceList()
         list.forEach() {
             logger.debug(it.toString())
@@ -31,7 +32,7 @@ class Server {
                 Enums.GET -> {
                     app.get(it.resource) { ctx ->
                         if (ctx.checkHeaders(it)) {
-                            ctx.errorAnswer()
+                            ctx.errorAnswer(it)
                         } else {
                             ctx.result(it.getFile())
                                     .contentType(it.contentType.value)
@@ -43,13 +44,17 @@ class Server {
                 }
                 Enums.POST -> {
                     app.post(it.resource) { ctx ->
-                        if (ctx.checkFields(it)) {
-                            ctx.result(it.getFile())
-                                    .contentType(it.contentType.value)
-                                    .header("Content-Type", it.contentType.value)
-                                    .status(it.code)
+                        if (ctx.checkHeaders(it)) {
+                            ctx.errorAnswer(it)
                         } else {
-                            ctx.errorAnswer()
+                            if (ctx.checkFields(it)) {
+                                ctx.result(it.getFile())
+                                        .contentType(it.contentType.value)
+                                        .header("Content-Type", it.contentType.value)
+                                        .status(it.code)
+                            } else {
+                                ctx.errorAnswer(it)
+                            }
                         }
                     }
                 }
@@ -59,10 +64,10 @@ class Server {
         }
     }
 
-    private fun Context.errorAnswer(code: Int = 400, pathToError: String = "/error.json", contentType: ContentType = ContentType.JSON) {
-        this.result(utils.readFile(pathToError))
-                .status(code)
-                .contentType(contentType.value)
+    private fun Context.errorAnswer(resource: ResourceEntity) {
+        this.result(utils.readFile(resource.pathToError))
+                .status(resource.errorCode)
+                .contentType(resource.errorContentType.value)
     }
 
     private fun Context.checkHeaders(resource: ResourceEntity): Boolean {

@@ -19,7 +19,7 @@
     "code": 200,
     "path": "/file.jpg",
     "method": "get",
-    "content-type": "binary"
+    "content_type": "binary"
   },
   {
     "resource": "/api/login/",
@@ -29,6 +29,18 @@
     "required_field": {
       "login": "admin",
       "password": "killall"
+    }
+  },
+  {
+    "resource": "/api/robot/1/",
+    "code": 200,
+    "path": "",
+    "method": "get",
+    "path_to_error": "/not_found.json",
+    "error_code": 404,
+    "error_content_type": "text",
+    "required_headers": {
+      "token": "123456789"
     }
   }
 ]
