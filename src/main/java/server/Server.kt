@@ -5,14 +5,14 @@ import elements.Enums
 import elements.ResourceEntity
 import io.javalin.Context
 import io.javalin.Javalin
-import org.slf4j.LoggerFactory
+import org.apache.log4j.Logger
 import utils.ResourceList
 import utils.bodyToMap
 import utils.readFile
 import java.io.InputStream
 
 class Server {
-    private val logger = LoggerFactory.getLogger(this::class.java)
+    private val logger = Logger.getLogger(this::class.java)
 
     companion object {
         @JvmStatic
@@ -26,7 +26,7 @@ class Server {
         val app = Javalin.start(port)
         val list = ResourceList().getResourceList()
         list.forEach() {
-            logger.info(it.toString())
+            logger.debug(it.toString())
             when (it.method) {
                 Enums.GET -> {
                     app.get(it.resource) { ctx ->

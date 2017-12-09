@@ -5,10 +5,10 @@ import com.google.gson.reflect.TypeToken
 import elements.Entity
 import elements.ResourceEntity
 import io.javalin.Context
-import org.slf4j.LoggerFactory
+import org.apache.log4j.Logger
 import java.io.InputStream
 
-val logger = LoggerFactory.getLogger("Utils")!!
+val logger = Logger.getLogger("Utils")!!
 
 fun <T : Entity>  String.toListObjects() : List<T> {
     val listType = object : TypeToken<List<ResourceEntity>>() {}.type
