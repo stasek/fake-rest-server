@@ -3,7 +3,10 @@
     "resource": "/api/hello/",
     "code": 200,
     "path": "/hello.json",
-    "method": "get"
+    "method": "get",
+    "required_headers": {
+      "token": "123456789"
+    }
   },
   {
     "resource": "/api/bye/",

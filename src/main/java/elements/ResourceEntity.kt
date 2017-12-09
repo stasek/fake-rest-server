@@ -11,7 +11,10 @@ class ResourceEntity (
         @SerializedName("content-type")
         val contentType: ContentType = ContentType.JSON,
         @SerializedName("required_field")
-        val requiredFields: HashMap<String, String> = HashMap()
+        val requiredFields: HashMap<String, String> = HashMap(),
+        @SerializedName("required_headers")
+        val requiredHeaders: HashMap<String, String> = HashMap(),
+        val pathToError: String = "/error.json"
 ) : Entity() {
 
         override fun toString(): String {
