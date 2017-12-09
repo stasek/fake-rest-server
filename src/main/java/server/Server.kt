@@ -45,6 +45,8 @@ class Server {
                         }
                     }
                 }
+                Enums.DELETE -> TODO("not implemented")
+                Enums.PUT -> TODO("not implemented")
             }
         }
     }
