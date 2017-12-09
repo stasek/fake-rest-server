@@ -5,6 +5,7 @@ import elements.ResourceEntity
 import io.javalin.Javalin
 import org.slf4j.LoggerFactory
 import utils.ResourceList
+import utils.bodyToMap
 import utils.readFile
 import java.io.InputStream
 
@@ -31,6 +32,17 @@ class Server {
                                     .header("Content-Type", it.contentType.value)
                                     .status(it.code)
 
+                    }
+                }
+                Enums.POST -> {
+                    app.post(it.resource) { ctx ->
+                        val bodyMap = ctx.bodyToMap()
+                        if (it.requiredFields.all { bodyMap[it.key] == it.value }){
+                            ctx.result(it.getFile())
+                                    .contentType(it.contentType.value)
+                                    .header("Content-Type", it.contentType.value)
+                                    .status(it.code)
+                        }
                     }
                 }
             }

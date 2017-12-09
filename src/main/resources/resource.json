@@ -12,10 +12,20 @@
     "method": "get"
   },
   {
-    "resource": "/api/file/",
+    "resource": "/api/file/file.jpg",
     "code": 200,
     "path": "/file.jpg",
     "method": "get",
     "content-type": "binary"
+  },
+  {
+    "resource": "/api/login/",
+    "code": 200,
+    "path": "/token.json",
+    "method": "post",
+    "required_field": {
+      "login": "admin",
+      "password": "killall"
+    }
   }
 ]

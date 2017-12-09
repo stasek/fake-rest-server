@@ -9,10 +9,13 @@ class ResourceEntity (
         val pathToFile: String = "",
         val method: Enums = Enums.POST,
         @SerializedName("content-type")
-        val contentType: ContentType = ContentType.JSON
+        val contentType: ContentType = ContentType.JSON,
+        @SerializedName("required_field")
+        val requiredFields: HashMap<String, String> = HashMap()
 ) : Entity() {
 
         override fun toString(): String {
-                return "ResourceEntity(resource='$resource', code=$code, pathToFile='$pathToFile', method=$method, contentType=$contentType)"
+                return "ResourceEntity(resource='$resource', code=$code, pathToFile='$pathToFile', method=$method, contentType=$contentType, requiredFields=$requiredFields)"
         }
+
 }
