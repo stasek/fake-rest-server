@@ -1,0 +1,17 @@
+{
+  "count": 2,
+  "next": null,
+  "previous": null,
+  "elements": [
+    {
+      "name": "Bender",
+      "last_name": "Rodriguez",
+      "age": "22"
+    },
+    {
+      "name": "Maria",
+      "last_name": "Rodriguez",
+      "age": "23"
+    }
+  ]
+}

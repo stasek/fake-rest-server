@@ -22,10 +22,15 @@ class Server {
     }
 
     fun server(port: Int = 7000) {
-        logger.info("Server try start")
+        logger.debug("Server try start")
         val app = Javalin.start(port)
-        logger.info("Server working")
+        logger.debug("Server working")
         val list = ResourceList().getResourceList()
+
+        app.error(404) {ctx -> logger.warn(ctx.logString())}
+        app.error(400) {ctx -> logger.warn(ctx.logString())}
+        app.error(500) {ctx -> logger.warn(ctx.logString())}
+
         list.forEach() {
             logger.debug(it.toString())
             when (it.method) {
@@ -34,32 +39,39 @@ class Server {
                         if (ctx.checkHeaders(it)) {
                             ctx.errorAnswer(it)
                         } else {
-                            ctx.result(it.getFile())
-                                    .contentType(it.contentType.value)
-                                    .header("Content-Type", it.contentType.value)
-                                    .status(it.code)
-                        }
-
-                    }
-                }
-                Enums.POST -> {
-                    app.post(it.resource) { ctx ->
-                        if (ctx.checkHeaders(it)) {
-                            ctx.errorAnswer(it)
-                        } else {
-                            if (ctx.checkFields(it)) {
+                            if (ctx.checkQueries(it)) {
+                                ctx.errorAnswer(it)
+                            } else {
                                 ctx.result(it.getFile())
                                         .contentType(it.contentType.value)
                                         .header("Content-Type", it.contentType.value)
                                         .status(it.code)
-                            } else {
+                            }
+                        }
+
+                    }
+                }
+                Enums.POST, Enums.PUT -> {
+                    app.post(it.resource) { ctx ->
+                        if (ctx.checkHeaders(it)) {
+                            ctx.errorAnswer(it)
+                        } else {
+                            if (ctx.checkQueries(it)){
                                 ctx.errorAnswer(it)
+                            } else {
+                                if (ctx.checkFields(it)) {
+                                    ctx.result(it.getFile())
+                                            .contentType(it.contentType.value)
+                                            .header("Content-Type", it.contentType.value)
+                                            .status(it.code)
+                                } else {
+                                    ctx.errorAnswer(it)
+                                }
                             }
                         }
                     }
                 }
                 Enums.DELETE -> TODO("not implemented")
-                Enums.PUT -> TODO("not implemented")
             }
         }
     }
@@ -80,7 +92,24 @@ class Server {
         return (resource.requiredFields.all { bodyMap[it.key] == it.value })
     }
 
+    private fun Context.checkQueries(resource: ResourceEntity): Boolean {
+        val queriesMap = this.queryParamMap()
+        return !resource.requiredQueries.all {
+            queriesMap[it.key]?.toList() == resource.requiredQueries[it.key]!!
+        }
+    }
+
     private fun ResourceEntity.getFile(): InputStream {
         return readFile(this.pathToFile)
+    }
+
+    private fun Context.logString(): String {
+        return this.status().toString() + " " +
+                this.method() + " " +
+                this.path() + " Query param: " +
+                this.queryParamMap() + " Headers: " +
+                this.headerMap() + " Body " +
+                this.bodyToMap()
+
     }
 }

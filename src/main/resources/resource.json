@@ -42,5 +42,19 @@
     "required_headers": {
       "token": "123456789"
     }
+  },
+  {
+    "resource": "/api/robots/",
+    "code": 200,
+    "path": "/robots.json",
+    "method": "get",
+    "path_to_error": "/empty.json",
+    "error_code": 200,
+    "required_headers": {
+      "token": "123456789"
+    },
+    "required_queries": {
+      "last_name": ["Rodriguez", "Anna"]
+    }
   }
 ]

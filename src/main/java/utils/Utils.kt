@@ -19,7 +19,7 @@ fun <T : Entity>  String.toListObjects() : List<T> {
 fun Context.bodyToMap(): Map<String, String> {
     val mapType = object : TypeToken<Map<String, String>>() {}.type
     if (body().isEmpty()) {
-        logger.info("Context body size is " + body().length.toString())
+        logger.trace("Context body size is " + body().length.toString())
         return HashMap()
     }
     return Gson().fromJson(body(), mapType)

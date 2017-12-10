@@ -19,11 +19,12 @@ class ResourceEntity(
         @SerializedName("error_code")
         val errorCode: Int = 400,
         @SerializedName("error_content_type")
-        val errorContentType: ContentType = ContentType.JSON
+        val errorContentType: ContentType = ContentType.JSON,
+        @SerializedName("required_queries")
+        val requiredQueries: HashMap<String, List<String>> = HashMap()
 ) : Entity() {
 
     override fun toString(): String {
-        return "ResourceEntity(resource='$resource', code=$code, pathToFile='$pathToFile', method=$method, contentType=$contentType, requiredFields=$requiredFields)"
+        return "ResourceEntity(resource='$resource', code=$code, pathToFile='$pathToFile', method=$method, contentType=$contentType, requiredFields=$requiredFields, requiredHeaders=$requiredHeaders, pathToError='$pathToError', errorCode=$errorCode, errorContentType=$errorContentType, requiredQueries=$requiredQueries)"
     }
-
 }
