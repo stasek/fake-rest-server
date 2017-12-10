@@ -7,21 +7,21 @@ import org.apache.log4j.Logger
 import utils.*
 import java.io.InputStream
 
-class Server {
+class FakeServer {
     private val logger = Logger.getLogger(this::class.java)
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            Server().server(port = port)
+            FakeServer().server(port = port)
         }
     }
 
     fun server(port: Int = 7000) {
-        logger.debug("Server try start")
+        logger.debug("FakeServer try start")
         val app = Javalin.start(port)
-        logger.debug("Server working")
+        logger.debug("FakeServer working")
         val list = ResourceList().getResourceList()
 
         app.error(404) {ctx -> logger.warn(ctx.logString())}

@@ -36,7 +36,7 @@
                                 <configuration>
                                     <archive>
                                         <manifest>
-                                            <mainClass>server.Server</mainClass>
+                                            <mainClass>server.FakeServer</mainClass>
                                         </manifest>
                                     </archive>
                                     <descriptorRefs>
