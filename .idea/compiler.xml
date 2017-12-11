@@ -6,11 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fake-rest-server" />
+        <module name="fakeRestServer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fake-rest-server" target="1.5" />
+      <module name="fake-rest-server_main" target="1.8" />
+      <module name="fake-rest-server_test" target="1.8" />
+      <module name="fakeRestServer" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
