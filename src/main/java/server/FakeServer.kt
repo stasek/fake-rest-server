@@ -14,15 +14,16 @@ class FakeServer {
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            FakeServer().server(port = port)
+            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
+            FakeServer().server(port = port, resourceFilePath = resourceFile)
         }
     }
 
-    fun server(port: Int = 7000) {
+    fun server(port: Int = 7000, resourceFilePath: String = "/resource.json") {
         logger.debug("FakeServer try start")
         val app = Javalin.start(port)
         logger.debug("FakeServer working")
-        val list = ResourceList().getResourceList()
+        val list = ResourceList().getResourceList(resourceFilePath)
 
         app.error(404) {ctx -> logger.warn(ctx.logString())}
         app.error(400) {ctx -> logger.warn(ctx.logString())}
