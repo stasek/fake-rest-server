@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/fakeRestServer.iml" filepath="$PROJECT_DIR$/fakeRestServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fake-rest-server.iml" filepath="$PROJECT_DIR$/fake-rest-server.iml" />
     </modules>
   </component>
 </project>

@@ -5,7 +5,7 @@ If you want to use a library as part of your code, compile using the "lib" profi
 ```sh
  mvn -P lib package
 ```
- The *fakeRestServer-0.0.1-jar-with-dependencies.jar* package contains the necessary dependencies.
+ The *fake-rest-server-0.0.1-jar-with-dependencies.jar* package contains the necessary dependencies.
 
  use in your code
 ```java
