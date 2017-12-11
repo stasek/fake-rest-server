@@ -3,20 +3,23 @@ This server is a stub for testing RestApi integration.
 If you want to use a library as part of your code, compile using the "lib" profile.
 
 ```sh
- mvn -P lib package
+gradle lib
 ```
- The *fake-rest-server-0.0.1-jar-with-dependencies.jar* package contains the necessary dependencies.
+ The *fake-rest-rerver-0.0.1.jar* package contains the necessary dependencies.
 
  use in your code
 ```java
  FakeServer().server();
  FakeServer().server(int port);
+ FakeServer().server(int port,String pathToFileContainsResource);
 ```
 
  ###### as app
 If you want to use the server as a stand-alone application, use the app profile.
 ```sh
- mvn -P app package
+gradle app
+
+java -Dport=80 -Dresourcefile="/resource.jasn" -jar fake-rest-rerver-0.0.1-app.jar
 ```
 Unfortunately you have to change the files in the jar.
 
