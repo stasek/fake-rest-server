@@ -1,16 +1,18 @@
 buildscript {
     ext.kotlin_version = '1.2.0'
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'kotlin'
+apply plugin: 'com.novoda.bintray-release'
 
 group = 'ru.svnik.tests'
 version = '0.0.1'
@@ -64,4 +66,13 @@ test {
     testLogging {
         events 'started', 'passed'
     }
+}
+
+publish {
+    groupId = group
+    artifactId = 'fake-rest-server'
+    publishVersion = '0.0.1'
+    desc = 'Fake REST server for testing'
+    licences = ['MIT']
+    website = 'https://github.com/stasek/fake-rest-server'
 }
