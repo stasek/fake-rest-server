@@ -1,60 +1,7 @@
 [
   {
-    "resource": "/api/hello/",
-    "code": 200,
-    "path": "/hello.json",
-    "method": "get",
-    "required_headers": {
-      "token": "123456789"
-    }
-  },
-  {
-    "resource": "/api/bye/",
-    "code": 200,
-    "path": "/bye.json",
-    "method": "get"
-  },
-  {
-    "resource": "/api/file/file.jpg",
-    "code": 200,
-    "path": "/file.jpg",
-    "method": "get",
-    "content_type": "binary"
-  },
-  {
-    "resource": "/api/login/",
-    "code": 200,
-    "path": "/token.json",
-    "method": "post",
-    "required_field": {
-      "login": "admin",
-      "password": "killall"
-    }
-  },
-  {
-    "resource": "/api/robot/1/",
-    "code": 200,
-    "path": "",
-    "method": "get",
-    "path_to_error": "/not_found.json",
-    "error_code": 404,
-    "error_content_type": "text",
-    "required_headers": {
-      "token": "123456789"
-    }
-  },
-  {
-    "resource": "/api/robots/",
-    "code": 200,
-    "path": "/robots.json",
-    "method": "get",
-    "path_to_error": "/empty.json",
-    "error_code": 200,
-    "required_headers": {
-      "token": "123456789"
-    },
-    "required_queries": {
-      "last_name": ["Rodriguez", "Anna"]
-    }
+    "resource": "/",
+    "path": "/error.json",
+    "You must do resource.json and put in resource folder your project":""
   }
 ]
