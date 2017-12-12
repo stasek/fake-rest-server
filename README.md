@@ -1,27 +1,49 @@
 # fake-rest-server
 This server is a stub for testing RestApi integration.
-If you want to use a library as part of your code, compile using the "lib" profile.
+#### maven
+```xml
+...
+<repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+</repositories>
+...
+<dependency>
+  <groupId>ru.svnik.tests</groupId>
+  <artifactId>fake-rest-server</artifactId>
+  <version>0.0.2</version>
+  <type>pom</type>
+</dependency>
+...
+```
+#### gradle
+```gradle
+compile 'ru.svnik.tests:fake-rest-server:0.0.2'
+```
+
+Also you can build the lid by yourself.
 
 ```sh
-gradle lib
+gradle lib  ## with all dependencies
+gradle jar  ## only fake server
 ```
- The *fake-rest-rerver-0.0.1.jar* package contains the necessary dependencies.
+Take lib in ./build/libs
 
  use in your code
-```java
- FakeServer().server();
- FakeServer().server(int port);
- FakeServer().server(int port,String pathToFileContainsResource);
+ ### kotlin
+```kotlin
+ val app = FakeServer().server(port : Int = 7000,pathToFileContainsResource: String = "/resource.json")
+  //your test code
+ app.stop()
 ```
-
- ###### as app
-If you want to use the server as a stand-alone application, use the app profile.
-```sh
-gradle app
-
-java -Dport=80 -Dresourcefile="/resource.jasn" -jar fake-rest-rerver-0.0.1-app.jar
+### java
+```kotlin
+ FakeServer app = FakeServer().server(int port,String pathToFileContainsResource);
+  //your test code
+ app.stop();
 ```
-Unfortunately you have to change the files in the jar.
 
 ### Required resources
 Required resources is *resource.json* and *error.json*.
@@ -61,3 +83,12 @@ resource and path required fields in resource.json.
 + required_headers - empty default
 + required_headers - empty default
 + required_queries - empty default
+
+ # as app
+If you want to use the server as a stand-alone application, use the app profile.
+```sh
+gradle app
+
+java -Dport=80 -Dresourcefile="/resource.json" -jar fake-rest-server-0.0.1-app.jar
+```
+Unfortunately you have to change the files in the jar.
