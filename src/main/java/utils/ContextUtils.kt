@@ -13,7 +13,7 @@ fun Context.errorAnswer(resource: ResourceEntity) {
 
 fun Context.checkHeaders(resource: ResourceEntity): Boolean {
     val headerMap = this.headerMap()
-    return (!resource.requiredHeaders.all { headerMap[it.key] == it.value })
+    return (resource.requiredHeaders.all { headerMap[it.key] == it.value })
 }
 
 fun Context.checkFields(resource: ResourceEntity): Boolean {
@@ -23,7 +23,7 @@ fun Context.checkFields(resource: ResourceEntity): Boolean {
 
 fun Context.checkQueries(resource: ResourceEntity): Boolean {
     val queriesMap = this.queryParamMap()
-    return !resource.requiredQueries.all {
+    return resource.requiredQueries.all {
         queriesMap[it.key]?.toList() == resource.requiredQueries[it.key]!!
     }
 }
@@ -46,4 +46,12 @@ fun Context.bodyToMap(): Map<String, String> {
         return HashMap()
     }
     return Gson().fromJson(body(), mapType)
+}
+
+fun Context.checkHeadersAndQueries(resource: ResourceEntity): Boolean {
+    return this.checkHeaders(resource) && this.checkQueries(resource)
+}
+
+fun Context.checkAll(resource: ResourceEntity): Boolean {
+    return this.checkHeadersAndQueries(resource) && this.checkFields(resource)
 }

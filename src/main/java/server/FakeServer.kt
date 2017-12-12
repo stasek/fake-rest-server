@@ -10,6 +10,8 @@ import java.io.InputStream
 class FakeServer {
     private val logger = Logger.getLogger(this::class.java)
 
+    private lateinit var app: Javalin
+
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -19,58 +21,56 @@ class FakeServer {
         }
     }
 
+
     fun server(port: Int = 7000, resourceFilePath: String = "/resource.json") {
         logger.debug("FakeServer try start")
-        val app = Javalin.start(port)
+        app = Javalin.start(port)
         logger.debug("FakeServer working")
         val list = ResourceList().getResourceList(resourceFilePath)
 
-        app.error(404) {ctx -> logger.warn(ctx.logString())}
-        app.error(400) {ctx -> logger.warn(ctx.logString())}
-        app.error(500) {ctx -> logger.warn(ctx.logString())}
-        app.error(300) {ctx -> logger.warn(ctx.logString())}
+        if (!logger.isTraceEnabled) {
+            app.error(404) { ctx -> logger.warn(ctx.logString()) }
+            app.error(400) { ctx -> logger.warn(ctx.logString()) }
+            app.error(500) { ctx -> logger.warn(ctx.logString()) }
+            app.error(300) { ctx -> logger.warn(ctx.logString()) }
+        }
+        app.after { ctx -> logger.trace(ctx.logString()) }
 
         list.forEach() {
             logger.debug(it.toString())
             when (it.method) {
                 Enums.GET -> {
                     app.get(it.resource) { ctx ->
-                        if (ctx.checkHeaders(it)) {
-                            ctx.errorAnswer(it)
+                        if (ctx.checkHeadersAndQueries(it)) {
+                            ctx.result(it.getFile())
+                                    .contentType(it.contentType.value)
+                                    .status(it.code)
                         } else {
-                            if (ctx.checkQueries(it)) {
-                                ctx.errorAnswer(it)
-                            } else {
-                                ctx.result(it.getFile())
-                                        .contentType(it.contentType.value)
-                                        .status(it.code)
-                            }
+                            ctx.errorAnswer(it)
                         }
+
 
                     }
                 }
                 Enums.POST, Enums.PUT -> {
                     app.post(it.resource) { ctx ->
-                        if (ctx.checkHeaders(it)) {
-                            ctx.errorAnswer(it)
+                        if (ctx.checkAll(it)) {
+                            ctx.result(it.getFile())
+                                    .contentType(it.contentType.value)
+                                    .status(it.code)
                         } else {
-                            if (ctx.checkQueries(it)){
-                                ctx.errorAnswer(it)
-                            } else {
-                                if (ctx.checkFields(it)) {
-                                    ctx.result(it.getFile())
-                                            .contentType(it.contentType.value)
-                                            .status(it.code)
-                                } else {
-                                    ctx.errorAnswer(it)
-                                }
-                            }
+                            ctx.errorAnswer(it)
                         }
+
                     }
                 }
                 Enums.DELETE -> TODO("not implemented")
             }
         }
+    }
+
+    fun stop() {
+        app.stop()
     }
 
 
