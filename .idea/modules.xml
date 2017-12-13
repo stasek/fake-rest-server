@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fake-rest-server.iml" filepath="$PROJECT_DIR$/.idea/modules/fake-rest-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fake-rest-server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/fake-rest-server_main.iml" group="fake-rest-server" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fake-rest-server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/fake-rest-server_test.iml" group="fake-rest-server" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fakeRestServer.iml" filepath="$PROJECT_DIR$/.idea/modules/fakeRestServer.iml" />
     </modules>
   </component>
 </project>

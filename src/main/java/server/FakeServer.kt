@@ -7,7 +7,7 @@ import org.apache.log4j.Logger
 import utils.*
 import java.io.InputStream
 
-class FakeServer {
+class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
 
     private lateinit var app: Javalin
@@ -17,12 +17,12 @@ class FakeServer {
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
             val resourceFile = System.getProperty("/resourceFile", "/resource.json")
-            FakeServer().server(port = port, resourceFilePath = resourceFile)
+            FakeServer(port, resourceFile).server()
         }
     }
 
 
-    fun server(port: Int = 7000, resourceFilePath: String = "/resource.json") {
+    fun server(): FakeServer {
         logger.debug("FakeServer try start")
         app = Javalin.start(port)
         logger.debug("FakeServer working")
@@ -42,22 +42,27 @@ class FakeServer {
                 Enums.GET -> {
                     app.get(it.resource) { ctx ->
                         if (ctx.checkHeadersAndQueries(it)) {
-                            ctx.result(it.getFile())
-                                    .contentType(it.contentType.value)
-                                    .status(it.code)
+                            ctx.fullResult(it)
+                        } else {
+                            ctx.errorAnswer(it)
+                        }
+                    }
+                }
+                Enums.POST -> {
+                    app.post(it.resource) { ctx ->
+                        if (ctx.checkAll(it)) {
+                            ctx.fullResult(it)
                         } else {
                             ctx.errorAnswer(it)
                         }
 
-
                     }
                 }
-                Enums.POST, Enums.PUT -> {
-                    app.post(it.resource) { ctx ->
+
+                Enums.PUT -> {
+                    app.put(it.resource) { ctx ->
                         if (ctx.checkAll(it)) {
-                            ctx.result(it.getFile())
-                                    .contentType(it.contentType.value)
-                                    .status(it.code)
+                            ctx.fullResult(it)
                         } else {
                             ctx.errorAnswer(it)
                         }
@@ -67,6 +72,7 @@ class FakeServer {
                 Enums.DELETE -> TODO("not implemented")
             }
         }
+        return this
     }
 
     fun stop() {

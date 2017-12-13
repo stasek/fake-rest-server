@@ -1,6 +1,9 @@
 import elements.ResourceEntity
+import io.javalin.Context
 import org.junit.Test
 import utils.toListObjects
+import org.mockito.Mockito.*
+import utils.bodyToMap
 
 
 class SimpleTest{
@@ -46,4 +49,19 @@ class SimpleTest{
         assert(objects[0].requiredFields["login"] == "admin")
         assert(objects[0].requiredFields["password"] == "killall")
     }
+
+
+    @Test
+    fun bodyToMapTest() {
+        val ctx = mock(Context::class.java)
+        `when`(ctx.body()).thenReturn("{'login':'admin'}")
+                .thenReturn("{'login':'admin'," +
+                "'pass':'12345'}")
+        val bodyMap = ctx.bodyToMap()
+        assert(bodyMap["login"] == "admin")
+        assert(bodyMap.size == 2)
+        assert(bodyMap["pass"] == "12345")
+    }
 }
+
+

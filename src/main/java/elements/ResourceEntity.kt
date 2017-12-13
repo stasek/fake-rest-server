@@ -1,6 +1,8 @@
 package elements
 
 import com.google.gson.annotations.SerializedName
+import utils.readFile
+import java.io.InputStream
 
 class ResourceEntity(
         val resource: String = "",
@@ -26,5 +28,10 @@ class ResourceEntity(
 
     override fun toString(): String {
         return "ResourceEntity(resource='$resource', code=$code, pathToFile='$pathToFile', method=$method, contentType=$contentType, requiredFields=$requiredFields, requiredHeaders=$requiredHeaders, pathToError='$pathToError', errorCode=$errorCode, errorContentType=$errorContentType, requiredQueries=$requiredQueries)"
+
+    }
+
+    fun getFile(): InputStream {
+        return readFile(this.pathToFile)
     }
 }

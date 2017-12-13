@@ -39,7 +39,7 @@ Take lib in ./build/libs
  app.stop()
 ```
 ### java
-```kotlin
+```java
  FakeServer app = FakeServer().server(int port,String pathToFileContainsResource);
   //your test code
  app.stop();

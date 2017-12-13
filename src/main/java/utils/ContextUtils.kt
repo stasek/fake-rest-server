@@ -55,3 +55,9 @@ fun Context.checkHeadersAndQueries(resource: ResourceEntity): Boolean {
 fun Context.checkAll(resource: ResourceEntity): Boolean {
     return this.checkHeadersAndQueries(resource) && this.checkFields(resource)
 }
+
+fun Context.fullResult(resource: ResourceEntity) {
+    this.result(resource.getFile())
+            .contentType(resource.contentType.value)
+            .status(resource.code)
+}
