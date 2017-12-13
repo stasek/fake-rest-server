@@ -9,7 +9,7 @@ class ResourceEntity(
         val code: Int = 200,
         @SerializedName("path")
         val pathToFile: String = "",
-        val method: Enums = Enums.GET,
+        val method: List<Enums> = listOf(Enums.GET),
         @SerializedName("content_type")
         val contentType: ContentType = ContentType.JSON,
         @SerializedName("required_field")

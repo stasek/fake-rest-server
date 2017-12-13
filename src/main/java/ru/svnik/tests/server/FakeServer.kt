@@ -15,7 +15,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
+            val resourceFile = System.getProperty("/resourceFile", "/res.json")
             FakeServer(port, resourceFile).server()
         }
     }
@@ -37,38 +37,40 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
 
         list.forEach() {
             logger.debug(it.toString())
-            when (it.method) {
-                Enums.GET -> {
-                    app.get(it.resource) { ctx ->
-                        if (ctx.checkHeadersAndQueries(it)) {
-                            ctx.fullResult(it)
-                        } else {
-                            ctx.errorAnswer(it)
+            it.method.forEach { method ->
+                when (method) {
+                    Enums.GET -> {
+                        app.get(it.resource) { ctx ->
+                            if (ctx.checkHeadersAndQueries(it)) {
+                                ctx.fullResult(it)
+                            } else {
+                                ctx.errorAnswer(it)
+                            }
                         }
                     }
-                }
-                Enums.POST -> {
-                    app.post(it.resource) { ctx ->
-                        if (ctx.checkAll(it)) {
-                            ctx.fullResult(it)
-                        } else {
-                            ctx.errorAnswer(it)
+                    Enums.POST -> {
+                        app.post(it.resource) { ctx ->
+                            if (ctx.checkAll(it)) {
+                                ctx.fullResult(it)
+                            } else {
+                                ctx.errorAnswer(it)
+                            }
+
                         }
-
                     }
-                }
 
-                Enums.PUT -> {
-                    app.put(it.resource) { ctx ->
-                        if (ctx.checkAll(it)) {
-                            ctx.fullResult(it)
-                        } else {
-                            ctx.errorAnswer(it)
+                    Enums.PUT -> {
+                        app.put(it.resource) { ctx ->
+                            if (ctx.checkAll(it)) {
+                                ctx.fullResult(it)
+                            } else {
+                                ctx.errorAnswer(it)
+                            }
+
                         }
-
                     }
+                    Enums.DELETE -> TODO("not implemented")
                 }
-                Enums.DELETE -> TODO("not implemented")
             }
         }
         return this

@@ -59,7 +59,7 @@ Required resources is *resource.json* and *error.json*.
     "resource": "/api/robots/",
     "code": 200,
     "path": "/robots.json",
-    "method": "get",
+    "method": ["get"],
     "path_to_error": "/empty.json",
     "error_code": 200,
     "required_headers": {
@@ -85,7 +85,7 @@ resource and path required fields in resource.json.
 + required_queries - empty default
 
  # as app
-If you want to use the ru.svnik.tests.server as a stand-alone application, use the app profile.
+If you want to use the server as a stand-alone application, use the app profile.
 ```sh
 gradle app
 
