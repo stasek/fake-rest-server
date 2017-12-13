@@ -50,7 +50,7 @@ task app(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'App version',
                 'Implementation-Version': version,
-                'Main-Class': 'server.FakeServer'
+                'Main-Class': 'ru.svnik.tests.server.FakeServer'
     }
     baseName = project.name + '-app'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

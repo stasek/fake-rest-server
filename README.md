@@ -34,13 +34,13 @@ Take lib in ./build/libs
  use in your code
  ### kotlin
 ```kotlin
- val app = FakeServer(port : Int = 7000,pathToFileContainsResource: String = "/resource.json").server()
+ val app = FakeServer(port : Int = 7000, pathToFileContainsResource: String = "/resource.json").server()
   //your test code
  app.stop()
 ```
 ### java
 ```java
- FakeServer app = FakeServer(int port,String pathToFileContainsResource).server();
+ FakeServer app = FakeServer(int port, String pathToFileContainsResource).server();
   //your test code
  app.stop();
 ```
