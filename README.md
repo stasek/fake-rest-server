@@ -1,5 +1,5 @@
-# fake-rest-server
-This server is a stub for testing RestApi integration.
+# fake-rest-ru.svnik.tests.server
+This ru.svnik.tests.server is a stub for testing RestApi integration.
 #### maven
 ```xml
 ...
@@ -27,20 +27,20 @@ Also you can build the lid by yourself.
 
 ```sh
 gradle lib  ## with all dependencies
-gradle jar  ## only fake server
+gradle jar  ## only fake ru.svnik.tests.server
 ```
 Take lib in ./build/libs
 
  use in your code
  ### kotlin
 ```kotlin
- val app = FakeServer().server(port : Int = 7000,pathToFileContainsResource: String = "/resource.json")
+ val app = FakeServer(port : Int = 7000,pathToFileContainsResource: String = "/resource.json").server()
   //your test code
  app.stop()
 ```
 ### java
 ```java
- FakeServer app = FakeServer().server(int port,String pathToFileContainsResource);
+ FakeServer app = FakeServer(int port,String pathToFileContainsResource).server();
   //your test code
  app.stop();
 ```
@@ -48,7 +48,7 @@ Take lib in ./build/libs
 ### Required resources
 Required resources is *resource.json* and *error.json*.
 *error.json*  file of the standard response on error.
-*resource.json* contains all information about the server resources.
+*resource.json* contains all information about the ru.svnik.tests.server resources.
 ```json
  [
   {
@@ -85,7 +85,7 @@ resource and path required fields in resource.json.
 + required_queries - empty default
 
  # as app
-If you want to use the server as a stand-alone application, use the app profile.
+If you want to use the ru.svnik.tests.server as a stand-alone application, use the app profile.
 ```sh
 gradle app
 

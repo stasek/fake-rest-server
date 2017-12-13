@@ -1,8 +1,9 @@
-import elements.ResourceEntity
 import io.javalin.Context
 import org.junit.Test
-import utils.toListObjects
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import ru.svnik.tests.elements.ResourceEntity
+import ru.svnik.tests.utils.toListObjects
 import utils.bodyToMap
 
 
