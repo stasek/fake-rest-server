@@ -1,8 +1,9 @@
-import elements.ResourceEntity
 import io.javalin.Context
 import org.junit.Test
-import utils.toListObjects
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import ru.svnik.tests.elements.ResourceEntity
+import ru.svnik.tests.utils.toListObjects
 import utils.bodyToMap
 
 
@@ -16,13 +17,13 @@ class SimpleTest{
                 "    \"resource\": \"/api/hello/\",\n" +
                 "    \"code\": 200,\n" +
                 "    \"path\": \"/hello.json\",\n" +
-                "    \"method\": \"get\"\n" +
+                "    \"method\": [\"get\"]\n" +
                 "  }," +
                 "{\n" +
                 "    \"resource\": \"/api/login/\",\n" +
                 "    \"code\": 200,\n" +
                 "    \"path\": \"/token.json\",\n" +
-                "    \"method\": \"post\",\n" +
+                "    \"method\": [\"post\"],\n" +
                 "    \"required_field\": {\n" +
                 "      \"login\": \"admin\",\n" +
                 "      \"password\": \"killall\"\n" +
@@ -39,7 +40,7 @@ class SimpleTest{
                 "    \"resource\": \"/api/login/\",\n" +
                 "    \"code\": 200,\n" +
                 "    \"path\": \"/token.json\",\n" +
-                "    \"method\": \"post\",\n" +
+                "    \"method\": [\"post\"],\n" +
                 "    \"required_field\": {\n" +
                 "      \"login\": \"admin\",\n" +
                 "      \"password\": \"killall\"\n" +

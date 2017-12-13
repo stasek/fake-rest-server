@@ -15,7 +15,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/res.json")
+            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
             FakeServer(port, resourceFile).server()
         }
     }
