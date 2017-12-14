@@ -79,7 +79,7 @@ resource and path required fields in resource.json.
 + method - array of methods, default ["get"]
 + path_to_error - default error.json
 + error_code - error status code, default 400
-+ error_content_type - default json
++ error_content_type - default "application/json"
 + required_headers - empty default
 + required_headers - empty default
 + required_queries - empty default
