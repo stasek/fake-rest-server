@@ -1,6 +1,7 @@
 package ru.svnik.tests.server
 
 import io.javalin.Javalin
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Enums
 import ru.svnik.tests.utils.ResourceList
@@ -9,7 +10,7 @@ import utils.*
 class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
 
-    private lateinit var app: Javalin
+    private val app: Javalin = Javalin.create().port(port)
 
     companion object {
         @JvmStatic
@@ -22,8 +23,9 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
 
 
     fun server(): FakeServer {
+        logger.level = Level.ALL
         logger.debug("FakeServer try start")
-        app = Javalin.start(port)
+        app.start()
         logger.debug("FakeServer working")
         val list = ResourceList().getResourceList(resourceFilePath)
 
@@ -35,40 +37,27 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         }
         app.after { ctx -> logger.trace(ctx.logString()) }
 
-        list.forEach() {
+        list.forEach {
             logger.debug(it.toString())
             it.method.forEach { method ->
                 when (method) {
                     Enums.GET -> {
                         app.get(it.resource) { ctx ->
-                            if (ctx.checkHeadersAndQueries(it)) {
-                                ctx.fullResult(it)
-                            } else {
-                                ctx.errorAnswer(it)
-                            }
+                            ctx.answerWithCheckHeaderAndQueries(it)
                         }
                     }
                     Enums.POST -> {
                         app.post(it.resource) { ctx ->
-                            if (ctx.checkAll(it)) {
-                                ctx.fullResult(it)
-                            } else {
-                                ctx.errorAnswer(it)
-                            }
-
+                            ctx.answerWithCheckAll(it)
                         }
                     }
 
                     Enums.PUT -> {
                         app.put(it.resource) { ctx ->
-                            if (ctx.checkAll(it)) {
-                                ctx.fullResult(it)
-                            } else {
-                                ctx.errorAnswer(it)
-                            }
-
+                            ctx.answerWithCheckAll(it)
                         }
                     }
+
                     Enums.DELETE -> TODO("not implemented")
                 }
             }

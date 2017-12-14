@@ -77,7 +77,7 @@ test {
 publish {
     groupId = group
     artifactId = 'fake-rest-server'
-    publishVersion = "0.0.3"
+    publishVersion = "0.0.3.1"
     desc = 'Fake REST server for testing'
     licences = ['MIT']
     website = 'https://github.com/stasek/fake-rest-server'

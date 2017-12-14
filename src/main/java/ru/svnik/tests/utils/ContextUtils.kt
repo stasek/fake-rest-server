@@ -30,7 +30,6 @@ fun Context.checkQueries(resource: ResourceEntity): Boolean {
     }
 }
 
-
 fun Context.logString(): String {
     return this.status().toString() + " " +
             this.method() + " " +
@@ -62,4 +61,20 @@ fun Context.fullResult(resource: ResourceEntity) {
     this.result(resource.getFile())
             .contentType(resource.contentType.value)
             .status(resource.code)
+}
+
+fun Context.answerWithCheckHeaderAndQueries(resource: ResourceEntity) {
+    if (this.checkHeadersAndQueries(resource)) {
+        this.fullResult(resource)
+    } else {
+        this.errorAnswer(resource)
+    }
+}
+
+fun Context.answerWithCheckAll(resource: ResourceEntity) {
+    if (this.checkAll(resource)) {
+        this.fullResult(resource)
+    } else {
+        this.errorAnswer(resource)
+    }
 }
