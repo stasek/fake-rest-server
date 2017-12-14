@@ -1,5 +1,5 @@
 # fake-rest-server
-This ru.svnik.tests.server is a stub for testing RestApi integration.
+This server is a stub for testing RestApi integration.
 #### maven
 ```xml
 ...
