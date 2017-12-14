@@ -13,21 +13,21 @@ This ru.svnik.tests.server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.3.1</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 #### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.3'
+compile 'ru.svnik.tests:fake-rest-server:0.0.3.1'
 ```
 
 Also you can build the lid by yourself.
 
 ```sh
 gradle lib  ## with all dependencies
-gradle jar  ## only fake ru.svnik.tests.server
+gradle jar  ## only fake server
 ```
 Take lib in ./build/libs
 
@@ -48,7 +48,7 @@ Take lib in ./build/libs
 ### Required resources
 Required resources is *resource.json* and *error.json*.
 *error.json*  file of the standard response on error.
-*resource.json* contains all information about the ru.svnik.tests.server resources.
+*resource.json* contains all information about the server resources.
 ```json
  [
   {
