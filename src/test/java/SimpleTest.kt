@@ -4,6 +4,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.toListObjects
+import utils.bodyToInfo
 import utils.bodyToMap
 
 
@@ -58,10 +59,36 @@ class SimpleTest{
         `when`(ctx.body()).thenReturn("{'login':'admin'}")
                 .thenReturn("{'login':'admin'," +
                 "'pass':'12345'}")
+        `when`(ctx.contentType()).thenReturn("application/json")
         val bodyMap = ctx.bodyToMap()
         assert(bodyMap["login"] == "admin")
         assert(bodyMap.size == 2)
         assert(bodyMap["pass"] == "12345")
+    }
+
+    @Test
+    fun bodyToMapNotJsonTest() {
+        val ctx = mock(Context::class.java)
+        `when`(ctx.contentType()).thenReturn("!!!")
+        `when`(ctx.body()).thenReturn("")
+        val bodyMap = ctx.bodyToMap()
+        assert(bodyMap.isEmpty())
+    }
+
+    @Test
+    fun bodyToMapEmptyBodyTest() {
+        val ctx = mock(Context::class.java)
+        `when`(ctx.body()).thenReturn("")
+        val bodyMap = ctx.bodyToMap()
+        assert(bodyMap.isEmpty())
+    }
+
+    @Test
+    fun bodyToInfoTest() {
+        val ctx = mock(Context::class.java)
+        `when` (ctx.bodyAsBytes()).thenReturn(ByteArray(10))
+        val bodyInfo = ctx.bodyToInfo()
+        assert(bodyInfo["Size"] == "10")
     }
 }
 
