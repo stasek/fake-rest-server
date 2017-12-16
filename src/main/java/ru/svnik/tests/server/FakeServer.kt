@@ -5,6 +5,7 @@ import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Enums
 import ru.svnik.tests.utils.ResourceList
 import utils.answerWithCheckAll
+import utils.answerWithCheckHeader
 import utils.answerWithCheckHeaderAndQueries
 import utils.logString
 
@@ -19,7 +20,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/res.json")
+            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
             FakeServer(port, resourceFile).server()
         }
     }
@@ -60,7 +61,11 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
                         }
                     }
 
-                    Enums.DELETE -> TODO("not implemented")
+                    Enums.DELETE -> {
+                        app.delete(it.resource) { ctx ->
+                            ctx.answerWithCheckHeader(it)
+                        }
+                    }
                 }
             }
         }

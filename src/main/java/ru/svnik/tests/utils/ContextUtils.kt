@@ -25,6 +25,14 @@ fun Context.answerWithCheckAll(resource: ResourceEntity) {
     }
 }
 
+fun Context.answerWithCheckHeader(resource: ResourceEntity) {
+    if (this.checkHeaders(resource)) {
+        this.fullResult(resource)
+    } else {
+        this.errorAnswer(resource)
+    }
+}
+
 fun Context.checkHeadersAndQueries(resource: ResourceEntity): Boolean {
     return this.checkHeaders(resource) && this.checkQueries(resource)
 }
