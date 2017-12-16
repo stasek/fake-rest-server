@@ -7,6 +7,7 @@ import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.logger
 import ru.svnik.tests.utils.readFile
+import java.util.*
 
 
 fun Context.answerWithCheckHeaderAndQueries(resource: ResourceEntity) {
@@ -70,8 +71,8 @@ fun Context.checkQueries(resource: ResourceEntity): Boolean {
 }
 
 
-fun Context.bodyToMap(): Map<String, String> {
-    val mapType = object : TypeToken<Map<String, String>>() {}.type
+fun Context.bodyToMap(): Map<String, Any> {
+    val mapType = object : TypeToken<Map<String, Any>>() {}.type
     if (body().isEmpty() || this.contentType() != ContentType.JSON.value) {
         logger.trace("Context body size is " + body().length.toString())
         return HashMap()

@@ -2,13 +2,13 @@ import io.javalin.Context
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
+import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.toListObjects
-import utils.bodyToInfo
-import utils.bodyToMap
+import utils.*
 
 
-class SimpleTest{
+class SimpleTest {
 
 
     @Test
@@ -36,7 +36,7 @@ class SimpleTest{
 
     @Test
     fun listToObjectContainsMapTest() {
-        val body = "["+
+        val body = "[" +
                 "{\n" +
                 "    \"resource\": \"/api/login/\",\n" +
                 "    \"code\": 200,\n" +
@@ -58,7 +58,7 @@ class SimpleTest{
         val ctx = mock(Context::class.java)
         `when`(ctx.body()).thenReturn("{'login':'admin'}")
                 .thenReturn("{'login':'admin'," +
-                "'pass':'12345'}")
+                        "'pass':'12345'}")
         `when`(ctx.contentType()).thenReturn("application/json")
         val bodyMap = ctx.bodyToMap()
         assert(bodyMap["login"] == "admin")
@@ -86,9 +86,86 @@ class SimpleTest{
     @Test
     fun bodyToInfoTest() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.bodyAsBytes()).thenReturn(ByteArray(10))
+        `when`(ctx.bodyAsBytes()).thenReturn(ByteArray(10))
         val bodyInfo = ctx.bodyToInfo()
         assert(bodyInfo["Size"] == "10")
+    }
+
+    @Test
+    fun checkBodyTest() {
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        `when`(ctx.bodyAsBytes()).thenReturn(ByteArray(10))
+        assert(ctx.checkBody(resource))
+    }
+
+    @Test
+    fun checkBodyJsonTest() {
+        val body =
+                "{\n" +
+                        "\t\"login\": \"admin\",\n" +
+                        "      \"password\": \"killall\",\n" +
+                        "  \"value\": {\n" +
+                        "    \"test\": \"pass\"\n" +
+                        "  }\n" +
+                        "}"
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val map = HashMap<String, String>()
+        map.put("login", "admin")
+        map.put("password", "killall")
+        `when`(ctx.body()).thenReturn(body)
+        `when`(resource.requiredFields).thenReturn(map)
+        `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
+        assert(ctx.checkBody(resource))
+    }
+
+    @Test
+    fun checkQueryTest(){
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val mapCtx = HashMap<String, Array<String>>()
+        mapCtx.put("name", arrayOf("admin"))
+        mapCtx.put("last_name", arrayOf("Petrov", "Ivanov"))
+        val mapRes = HashMap<String, List<String>>()
+        mapRes.put("name", listOf("admin"))
+        mapRes.put("last_name", listOf("Petrov", "Ivanov"))
+        `when` (ctx.queryParamMap())
+                .thenReturn(mapCtx)
+        `when` (resource.requiredQueries)
+                .thenReturn(mapRes)
+        assert(ctx.checkQueries(resource))
+    }
+
+    @Test
+    fun checkQueryNullResTest(){
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val mapCtx = HashMap<String, Array<String>>()
+        mapCtx.put("name", arrayOf("admin"))
+        mapCtx.put("last_name", arrayOf("Petrov", "Ivanov"))
+        val mapRes = HashMap<String, List<String>>()
+        `when` (ctx.queryParamMap())
+                .thenReturn(mapCtx)
+        `when` (resource.requiredQueries)
+                .thenReturn(mapRes)
+        assert(ctx.checkQueries(resource))
+    }
+
+    @Test
+    fun checkQueryNullCtxTest(){
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val mapCtx = HashMap<String, Array<String>>()
+        mapCtx.put("name", arrayOf("admin"))
+        val mapRes = HashMap<String, List<String>>()
+        mapRes.put("name", listOf("admin"))
+        mapRes.put("last_name", listOf("Petrov", "Ivanov"))
+        `when` (ctx.queryParamMap())
+                .thenReturn(mapCtx)
+        `when` (resource.requiredQueries)
+                .thenReturn(mapRes)
+        assert(!ctx.checkQueries(resource))
     }
 }
 
