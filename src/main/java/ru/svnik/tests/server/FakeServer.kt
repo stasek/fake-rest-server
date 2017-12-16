@@ -1,29 +1,31 @@
 package ru.svnik.tests.server
 
 import io.javalin.Javalin
-import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Enums
 import ru.svnik.tests.utils.ResourceList
-import utils.*
+import utils.answerWithCheckAll
+import utils.answerWithCheckHeaderAndQueries
+import utils.logString
 
 class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
 
-    private val app: Javalin = Javalin.create().port(port)
+    private val app: Javalin = Javalin
+            .create()
+            .port(port)
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
+            val resourceFile = System.getProperty("/resourceFile", "/res.json")
             FakeServer(port, resourceFile).server()
         }
     }
 
 
     fun server(): FakeServer {
-        logger.level = Level.ALL
         logger.debug("FakeServer try start")
         app.start()
         logger.debug("FakeServer working")

@@ -64,30 +64,31 @@ fun Context.checkQueries(resource: ResourceEntity): Boolean {
 
 fun Context.bodyToMap(): Map<String, String> {
     val mapType = object : TypeToken<Map<String, String>>() {}.type
-    if (body().isEmpty()) {
+    if (body().isEmpty() || this.contentType() != ContentType.JSON.value) {
         logger.trace("Context body size is " + body().length.toString())
         return HashMap()
     }
     return Gson().fromJson(body(), mapType)
 }
 
+fun Context.bodyToInfo(): Map<String, String> {
+    val byteBody = bodyAsBytes()
+    val mapInfo = HashMap<String, String>()
+    mapInfo.put("Size", byteBody.size.toString())
+    mapInfo.put("Content-Type", this.contentType() ?: "Not Content-Type")
+    return mapInfo
+}
+
 fun Context.bodyHandler(resource: ResourceEntity): Boolean{
-        when(this.contentType()){
-            ContentType.JSON.value -> {
-                val bodyMap= this.bodyToMap()
-                return (resource.requiredFields.all { bodyMap[it.key] == it.value })
-            }
-            ContentType.TEXT.value -> {
-                return false
-            }
-            ContentType.BINARY.value -> {
-                return false
-            }
-            else -> {
-                logger.info("${this.contentType()} type not implements")
-                return false
-            }
+    val bodyMap = when(this.contentType()){
+        ContentType.JSON.value -> {
+            this.bodyToMap()
         }
+        else -> {
+            this.bodyToInfo()
+        }
+    }
+    return (resource.requiredFields.all { bodyMap[it.key] == it.value })
 }
 
 
