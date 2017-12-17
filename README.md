@@ -2,7 +2,7 @@
 [![apm](https://img.shields.io/apm/l/vim-mode.svg?style=flat)](https://github.com/stasek/fake-rest-server/blob/master/LICENSE) [ ![Bintray](https://api.bintray.com/packages/stasek/maven/fake-rest-server/images/download.svg) ](https://bintray.com/stasek/maven/fake-rest-server/_latestVersion) [ ![WIKI](https://img.shields.io/badge/WIKI-READ-RED.svg)](https://github.com/stasek/fake-rest-server/wiki)
 
 This server is a stub for testing RestApi integration.
-#### maven
+### maven
 ```xml
 ...
 <repositories>
@@ -15,14 +15,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.3.1</version>
+  <version>0.0.4</version>
   <type>pom</type>
 </dependency>
 ...
 ```
-#### gradle
+### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.3.1'
+compile 'ru.svnik.tests:fake-rest-server:0.0.4'
 ```
 
 Also you can build the lid by yourself.
@@ -34,7 +34,7 @@ gradle jar  ## only fake server
 Take lib in ./build/libs
 
  use in your code
- ### kotlin
+### kotlin
 ```kotlin
  val app = FakeServer(port : Int = 7000, pathToFileContainsResource: String = "/resource.json").server()
   //your test code
@@ -75,7 +75,7 @@ Required resources is *resource.json* and *error.json*.
 ```
 resource and path required fields in resource.json.
 
-##### Not required fields:
+### Not required fields:
 
 + code -  status code, 200 default
 + method - array of methods, default ["get"]
@@ -86,7 +86,7 @@ resource and path required fields in resource.json.
 + required_headers - empty default
 + required_queries - empty default
 
- # as app
+# as app
 If you want to use the server as a stand-alone application, use the app profile.
 ```sh
 gradle app

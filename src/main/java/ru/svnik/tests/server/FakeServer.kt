@@ -8,6 +8,7 @@ import utils.answerWithCheckAll
 import utils.answerWithCheckHeader
 import utils.answerWithCheckHeaderAndQueries
 import utils.logString
+import java.net.NetworkInterface
 
 class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
@@ -21,7 +22,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
             val resourceFile = System.getProperty("/resourceFile", "/resource.json")
-            FakeServer(port, resourceFile).server()
+            val server = FakeServer(port, resourceFile).server()
         }
     }
 
@@ -31,6 +32,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         app.start()
         logger.debug("FakeServer working")
         val list = ResourceList().getResourceList(resourceFilePath)
+
 
         if (!logger.isTraceEnabled) {
             app.error(404) { ctx -> logger.warn(ctx.logString()) }
@@ -74,6 +76,13 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
 
     fun stop() {
         app.stop()
+    }
+
+    fun thisInetAddresses(): List<String> {
+        return NetworkInterface.getNetworkInterfaces()
+                .toList().filter { !it.isLoopback }
+                .flatMap{ it.inetAddresses.toList()
+                .map { it.hostAddress } }
     }
 
 }
