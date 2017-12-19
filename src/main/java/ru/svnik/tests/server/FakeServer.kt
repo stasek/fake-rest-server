@@ -22,7 +22,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
             val resourceFile = System.getProperty("/resourceFile", "/resource.json")
-            val server = FakeServer(port, resourceFile).server()
+            FakeServer(port, resourceFile).server()
         }
     }
 

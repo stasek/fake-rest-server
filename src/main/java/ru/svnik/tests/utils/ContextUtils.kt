@@ -6,7 +6,7 @@ import io.javalin.Context
 import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.logger
-import ru.svnik.tests.utils.readFile
+import ru.svnik.tests.utils.readFileAsStream
 import java.util.*
 
 
@@ -42,14 +42,23 @@ fun Context.checkAll(resource: ResourceEntity): Boolean {
     return this.checkHeadersAndQueries(resource) && this.checkBody(resource)
 }
 
-fun Context.fullResult(resource: ResourceEntity) {
-    this.result(resource.getFile())
-            .contentType(resource.contentType.value)
-            .status(resource.code)
+fun Context.fullResult(resource: ResourceEntity): Context {
+    return if (resource.contentType != ContentType.JSON &&
+            resource.contentType != ContentType.TEXT)  {
+        this.result(resource.getFileAsStream())
+                .contentType(resource.contentType.value)
+                .status(resource.code)
+    }
+    else {
+        this.result(String.format(resource.getFileAsString(),*this.splats()))
+                .contentType(resource.contentType.value)
+                .status(resource.code)
+    }
+
 }
 
 fun Context.errorAnswer(resource: ResourceEntity) {
-    this.result(readFile(resource.pathToError))
+    this.result(readFileAsStream(resource.pathToError))
             .status(resource.errorCode)
             .contentType(resource.errorContentType.value)
 }

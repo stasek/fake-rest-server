@@ -15,7 +15,7 @@ fun <T : Entity>  String.toListObjects() : List<T> {
     return Gson().fromJson(this, listType)
 }
 
-fun readFile(name: String): InputStream {
+fun readFileAsStream(name: String): InputStream {
     try {
         return ResourceList::class.java.getResourceAsStream(name)
     } catch (e: IllegalStateException){
@@ -23,3 +23,9 @@ fun readFile(name: String): InputStream {
     }
     return IOUtils.toInputStream("{\"file\":\"$name not exists\"}", "UTF-8")
 }
+
+fun readFileAsString(name: String): String {
+    return IOUtils.toString(readFileAsStream(name), "UTF-8")
+}
+
+
