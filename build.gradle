@@ -67,6 +67,10 @@ task lib(type: Jar, dependsOn: test) {
     with jar
 }
 
+processResources {
+    include("/error.json", "/resource.json", "/log4j.properties")
+}
+
 
 test {
     testLogging {
