@@ -15,14 +15,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.4'
+compile 'ru.svnik.tests:fake-rest-server:0.0.5'
 ```
 
 Also you can build the lid by yourself.
@@ -91,6 +91,6 @@ If you want to use the server as a stand-alone application, use the app profile.
 ```sh
 gradle app
 
-java -Dport=80 -Dresourcefile="/resource.json" -jar fake-rest-server-0.0.1-app.jar
+java -Dport=80 -Dresourcefile="/resource.json" -jar fake-rest-server-app-version-/d-hash.jar
 ```
 Unfortunately you have to change the files in the jar.
