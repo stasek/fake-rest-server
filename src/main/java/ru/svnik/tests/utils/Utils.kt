@@ -8,14 +8,14 @@ import ru.svnik.tests.elements.Entity
 import ru.svnik.tests.elements.ResourceEntity
 import java.io.InputStream
 
-val logger = Logger.getLogger("Utils")!!
+internal val logger = Logger.getLogger("Utils")!!
 
-fun <T : Entity>  String.toListObjects() : List<T> {
+internal fun <T : Entity>  String.toListObjects() : List<T> {
     val listType = object : TypeToken<List<ResourceEntity>>() {}.type
     return Gson().fromJson(this, listType)
 }
 
-fun readFileAsStream(name: String): InputStream {
+internal fun readFileAsStream(name: String): InputStream {
     try {
         return ResourceList::class.java.getResourceAsStream(name)
     } catch (e: IllegalStateException){
@@ -24,7 +24,7 @@ fun readFileAsStream(name: String): InputStream {
     return IOUtils.toInputStream("{\"file\":\"$name not exists\"}", "UTF-8")
 }
 
-fun readFileAsString(name: String): String {
+internal fun readFileAsString(name: String): String {
     return IOUtils.toString(readFileAsStream(name), "UTF-8")
 }
 

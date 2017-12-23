@@ -5,7 +5,10 @@ import org.mockito.Mockito.mock
 import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.toListObjects
-import utils.*
+import utils.bodyToInfo
+import utils.bodyToMap
+import utils.checkBody
+import utils.checkQueries
 
 
 class SimpleTest {
@@ -121,7 +124,7 @@ class SimpleTest {
     }
 
     @Test
-    fun checkQueryTest(){
+    fun checkQueryTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
         val mapCtx = HashMap<String, Array<String>>()
@@ -130,30 +133,30 @@ class SimpleTest {
         val mapRes = HashMap<String, List<String>>()
         mapRes.put("name", listOf("admin"))
         mapRes.put("last_name", listOf("Petrov", "Ivanov"))
-        `when` (ctx.queryParamMap())
+        `when`(ctx.queryParamMap())
                 .thenReturn(mapCtx)
-        `when` (resource.requiredQueries)
+        `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
         assert(ctx.checkQueries(resource))
     }
 
     @Test
-    fun checkQueryNullResTest(){
+    fun checkQueryNullResTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
         val mapCtx = HashMap<String, Array<String>>()
         mapCtx.put("name", arrayOf("admin"))
         mapCtx.put("last_name", arrayOf("Petrov", "Ivanov"))
         val mapRes = HashMap<String, List<String>>()
-        `when` (ctx.queryParamMap())
+        `when`(ctx.queryParamMap())
                 .thenReturn(mapCtx)
-        `when` (resource.requiredQueries)
+        `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
         assert(ctx.checkQueries(resource))
     }
 
     @Test
-    fun checkQueryNullCtxTest(){
+    fun checkQueryNullCtxTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
         val mapCtx = HashMap<String, Array<String>>()
@@ -161,12 +164,13 @@ class SimpleTest {
         val mapRes = HashMap<String, List<String>>()
         mapRes.put("name", listOf("admin"))
         mapRes.put("last_name", listOf("Petrov", "Ivanov"))
-        `when` (ctx.queryParamMap())
+        `when`(ctx.queryParamMap())
                 .thenReturn(mapCtx)
-        `when` (resource.requiredQueries)
+        `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
         assert(!ctx.checkQueries(resource))
     }
+
 }
 
 

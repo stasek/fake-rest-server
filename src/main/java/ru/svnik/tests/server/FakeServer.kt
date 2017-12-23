@@ -4,14 +4,12 @@ import io.javalin.Javalin
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Enums
 import ru.svnik.tests.utils.ResourceList
-import utils.answerWithCheckAll
-import utils.answerWithCheckHeader
-import utils.answerWithCheckHeaderAndQueries
-import utils.logString
+import utils.*
 import java.net.NetworkInterface
 
 class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
+    private val ip4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 
     private val app: Javalin = Javalin
             .create()
@@ -83,6 +81,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
                 .toList().filter { !it.isLoopback }
                 .flatMap{ it.inetAddresses.toList()
                 .map { it.hostAddress } }
+                .filter { it.matches(Regex(ip4Regex)) }
     }
 
 }

@@ -32,11 +32,11 @@ class ResourceEntity(
 
     }
 
-    fun getFileAsStream(): InputStream {
+    internal fun getFileAsStream(): InputStream {
         return readFileAsStream(this.pathToFile)
     }
 
-    fun getFileAsString(): String {
+    internal fun getFileAsString(): String {
         return readFileAsString(this.pathToFile)
     }
 }
