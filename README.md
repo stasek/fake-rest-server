@@ -1,6 +1,6 @@
 # fake-rest-server
 [![apm](https://img.shields.io/apm/l/vim-mode.svg?style=flat)](https://github.com/stasek/fake-rest-server/blob/master/LICENSE) [ ![Bintray](https://api.bintray.com/packages/stasek/maven/fake-rest-server/images/download.svg) ](https://bintray.com/stasek/maven/fake-rest-server/_latestVersion) [ ![WIKI](https://img.shields.io/badge/WIKI-READ-RED.svg)](https://github.com/stasek/fake-rest-server/wiki)
-[example](https://github.com/stasek/example_fake_server)
+ [example](https://github.com/stasek/example_fake_server)
 
 This server is a stub for testing RestApi integration.
 ### maven
@@ -16,14 +16,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.5'
+compile 'ru.svnik.tests:fake-rest-server:0.0.6'
 ```
 
 Also you can build the lid by yourself.
