@@ -1,6 +1,7 @@
 package ru.svnik.tests.elements
 
 import com.google.gson.annotations.SerializedName
+import ru.svnik.tests.utils.getOneObjectByID
 import ru.svnik.tests.utils.readFileAsStream
 import ru.svnik.tests.utils.readFileAsString
 import java.io.InputStream
@@ -38,5 +39,9 @@ class ResourceEntity(
 
     internal fun getFileAsString(): String {
         return readFileAsString(this.pathToFile)
+    }
+
+    internal fun getOneObjectByIDFromFile(id: Int): String {
+        return getOneObjectByID(this.pathToFile, id)
     }
 }

@@ -51,7 +51,7 @@ private fun Context.fullResult(resource: ResourceEntity): Context {
                 .contentType(resource.contentType.value)
                 .status(resource.code)
     } else {
-        this.result(String.format(resource.getFileAsString(), *this.splats()))
+        this.result(resource.getOneObjectByIDFromFile(this.splat(0)!!.toInt()))
                 .contentType(resource.contentType.value)
                 .status(resource.code)
     }

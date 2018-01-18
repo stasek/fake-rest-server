@@ -9,18 +9,30 @@ import java.net.NetworkInterface
 
 class FakeServer(private val port: Int = 7000, private val resourceFilePath: String = "/resource.json") {
     private val logger = Logger.getLogger(this::class.java)
-    private val ip4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+
 
     private val app: Javalin = Javalin
             .create()
             .port(port)
 
     companion object {
+
+        private val ip4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+
         @JvmStatic
         fun main(args: Array<String>) {
             val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
+            val resourceFile = System.getProperty("/resourceFile", "/res.json")
             FakeServer(port, resourceFile).server()
+        }
+
+        @JvmStatic
+        fun thisInetAddresses(): List<String> {
+            return NetworkInterface.getNetworkInterfaces()
+                    .toList().filter { !it.isLoopback }
+                    .flatMap{ it.inetAddresses.toList()
+                            .map { it.hostAddress } }
+                    .filter { it.matches(Regex(ip4Regex)) }
         }
     }
 
@@ -74,14 +86,6 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
 
     fun stop() {
         app.stop()
-    }
-
-    fun thisInetAddresses(): List<String> {
-        return NetworkInterface.getNetworkInterfaces()
-                .toList().filter { !it.isLoopback }
-                .flatMap{ it.inetAddresses.toList()
-                .map { it.hostAddress } }
-                .filter { it.matches(Regex(ip4Regex)) }
     }
 
 }
