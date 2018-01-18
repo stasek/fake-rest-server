@@ -16,14 +16,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.7</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.5'
+compile 'ru.svnik.tests:fake-rest-server:0.0.7'
 ```
 
 Also you can build the lid by yourself.
