@@ -51,15 +51,20 @@ private fun Context.fullResult(resource: ResourceEntity): Context {
                 .contentType(resource.contentType.value)
                 .status(resource.code)
     } else {
-        this.result(resource.getOneObjectByIDFromFile(this.splat(0)!!.toInt()))
-                .contentType(resource.contentType.value)
-                .status(resource.code)
+        val struct =  resource.getOneObjectByIDFromFile(this.splat(0)!!.toInt())
+        if (struct.isNotEmpty()) {
+            this.result(struct)
+                    .contentType(resource.contentType.value)
+                    .status(resource.code)
+        } else {
+            this.errorAnswer(resource)
+        }
     }
 
 }
 
-private fun Context.errorAnswer(resource: ResourceEntity) {
-    this.result(readFileAsStream(resource.pathToError))
+private fun Context.errorAnswer(resource: ResourceEntity): Context {
+    return this.result(readFileAsStream(resource.pathToError))
             .status(resource.errorCode)
             .contentType(resource.errorContentType.value)
 }
@@ -93,8 +98,8 @@ internal fun Context.bodyToMap(): Map<String, Any> {
 internal fun Context.bodyToInfo(): Map<String, String> {
     val byteBody = bodyAsBytes()
     val mapInfo = HashMap<String, String>()
-    mapInfo.put("Size", byteBody.size.toString())
-    mapInfo.put("Content-Type", this.contentType() ?: "Not Content-Type")
+    mapInfo["Size"] = byteBody.size.toString()
+    mapInfo["Content-Type"] = this.contentType() ?: "Not Content-Type"
     return mapInfo
 }
 
