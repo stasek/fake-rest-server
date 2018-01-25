@@ -5,10 +5,7 @@ import org.mockito.Mockito.mock
 import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.utils.toListObjects
-import utils.bodyToInfo
-import utils.bodyToMap
-import utils.checkBody
-import utils.checkQueries
+import utils.*
 
 
 class SimpleTest {
@@ -169,6 +166,30 @@ class SimpleTest {
         `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
         assert(!ctx.checkQueries(resource))
+    }
+
+    @Test(expected = NullPointerException::class)
+    fun fullResultTest() {
+        val ctx = mock(Context::class.java)
+        `when` (ctx.splat(0)).thenReturn("").thenReturn(null)
+
+        val resource = ResourceEntity(pathToFile = "/robots.json",
+                contentType = ContentType.JSON,
+                code = 200)
+
+        println(ctx.fullResult(resource))
+    }
+
+    @Test(expected = IllegalStateException::class)
+    fun fullResultTestMotArray() {
+        val ctx = mock(Context::class.java)
+        `when` (ctx.splat(0)).thenReturn("12")
+
+        val resource = ResourceEntity(pathToFile = "/robots.json",
+                contentType = ContentType.JSON,
+                code = 200)
+
+        println(ctx.fullResult(resource))
     }
 
 }

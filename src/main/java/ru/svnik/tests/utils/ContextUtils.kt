@@ -44,14 +44,13 @@ private fun Context.checkAll(resource: ResourceEntity): Boolean {
     return this.checkHeadersAndQueries(resource) && this.checkBody(resource)
 }
 
-private fun Context.fullResult(resource: ResourceEntity): Context {
-    return if (resource.contentType != ContentType.JSON &&
-            resource.contentType != ContentType.TEXT) {
+internal fun Context.fullResult(resource: ResourceEntity): Context {
+    return if (this.splats().isEmpty()) {
         this.result(resource.getFileAsStream())
                 .contentType(resource.contentType.value)
                 .status(resource.code)
     } else {
-        val struct =  resource.getOneObjectByIDFromFile(this.splat(0)!!.toInt())
+        val struct =  resource.getOneObjectByIDFromFile(this.splats().last().toInt())
         if (struct.isNotEmpty()) {
             this.result(struct)
                     .contentType(resource.contentType.value)

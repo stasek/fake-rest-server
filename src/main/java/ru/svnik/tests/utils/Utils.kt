@@ -40,7 +40,7 @@ internal fun readFileAsString(name: String): String {
 internal fun getOneObjectByID(name: String, id: Int): String {
     return (IOUtils.toString(readFileAsStream(name), "UTF-8")
             .toListObject()
-            .firstOrNull { it.toString().contains("\"id\":$id") } ?: "").toString()
+            .firstOrNull { it.toString().contains(Regex("\"id\":\\s*$id[,\\n]")) } ?: "").toString()
 }
 
 
