@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.20'
+    ext.kotlin_version = '1.2.21'
     repositories {
         jcenter()
     }
@@ -18,13 +18,12 @@ apply plugin: 'com.novoda.bintray-release'
 group = 'ru.svnik.tests'
 //version = getGitVersionLong()
 
-if (project.hasProperty("bu")){
+if (project.hasProperty("bu")) {
     version = getGitVersion()
     processResources {
         include("/error.json", "/resource.json", "/log4j.properties")
     }
-}
-else {
+} else {
     version = getGitVersionLong()
 }
 
@@ -37,6 +36,7 @@ targetCompatibility = 1.8
 
 repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter { url "http://jcenter.bintray.com/" }
 }
 
 dependencies {
@@ -46,7 +46,8 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.2.10'
+    compile group: 'khttp', name: 'khttp', version: '0.1.0'
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.2.10'
     testCompile 'org.junit.platform:junit-platform-gradle-plugin:1.1.0-M1'
     testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.0'
     testCompile group: 'org.mockito', name: 'mockito-inline', version: '2.7.13'
@@ -93,7 +94,7 @@ publish {
     website = 'https://github.com/stasek/fake-rest-server'
 }
 
-def getGitVersionLong()  {
+def getGitVersionLong() {
     def stdout = new ByteArrayOutputStream()
     exec {
         commandLine 'git', 'describe', '--tags', '--long'
@@ -102,7 +103,7 @@ def getGitVersionLong()  {
     return stdout.toString().trim()
 }
 
-def getGitVersion()  {
+def getGitVersion() {
     def stdout = new ByteArrayOutputStream()
     exec {
         commandLine 'git', 'describe', '--tags'

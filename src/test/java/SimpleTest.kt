@@ -8,6 +8,8 @@ import ru.svnik.tests.utils.toListObjects
 import utils.*
 
 
+
+
 class SimpleTest {
 
 
@@ -169,7 +171,7 @@ class SimpleTest {
     }
 
     @Test(expected = NullPointerException::class)
-    fun fullResultTest() {
+    fun fullResultTestNullSplat() {
         val ctx = mock(Context::class.java)
         `when` (ctx.splats()).thenReturn(arrayOf())
 
@@ -177,7 +179,7 @@ class SimpleTest {
                 contentType = ContentType.JSON,
                 code = 200)
 
-        println(ctx.fullResult(resource))
+        ctx.fullResult(resource)
     }
 
     @Test(expected = IllegalStateException::class)
@@ -189,8 +191,9 @@ class SimpleTest {
                 contentType = ContentType.JSON,
                 code = 200)
 
-        println(ctx.fullResult(resource))
+        ctx.fullResult(resource)
     }
+
 
 }
 
