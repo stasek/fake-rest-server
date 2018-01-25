@@ -171,7 +171,7 @@ class SimpleTest {
     @Test(expected = NullPointerException::class)
     fun fullResultTest() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splat(0)).thenReturn("").thenReturn(null)
+        `when` (ctx.splats()).thenReturn(arrayOf())
 
         val resource = ResourceEntity(pathToFile = "/robots.json",
                 contentType = ContentType.JSON,
@@ -183,7 +183,7 @@ class SimpleTest {
     @Test(expected = IllegalStateException::class)
     fun fullResultTestMotArray() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splat(0)).thenReturn("12")
+        `when` (ctx.splats()).thenReturn(arrayOf("12"))
 
         val resource = ResourceEntity(pathToFile = "/robots.json",
                 contentType = ContentType.JSON,
