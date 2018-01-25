@@ -1,6 +1,6 @@
 # fake-rest-server
 [![apm](https://img.shields.io/apm/l/vim-mode.svg?style=flat)](https://github.com/stasek/fake-rest-server/blob/master/LICENSE) [ ![Bintray](https://api.bintray.com/packages/stasek/maven/fake-rest-server/images/download.svg) ](https://bintray.com/stasek/maven/fake-rest-server/_latestVersion) [ ![WIKI](https://img.shields.io/badge/WIKI-READ-RED.svg)](https://github.com/stasek/fake-rest-server/wiki)
- [example](https://github.com/stasek/example_fake_server)
+ [ ![EXAMPLE](https://img.shields.io/badge/example-see-grey.svg)](https://github.com/stasek/example_fake_server)
 
 This server is a stub for testing RestApi integration.
 ### maven
