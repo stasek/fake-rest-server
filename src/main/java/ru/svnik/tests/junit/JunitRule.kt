@@ -10,7 +10,8 @@ import ru.svnik.tests.server.FakeServer
 
 class FakeRestServerRule : TestWatcher() {
     private val logger = Logger.getLogger(this::class.java)
-    lateinit var app: FakeServer
+    @Volatile
+    private lateinit var app: FakeServer
 
     override fun finished(description: Description) {
         val FRS = description.getAnnotation(FakeRestServer::class.java)

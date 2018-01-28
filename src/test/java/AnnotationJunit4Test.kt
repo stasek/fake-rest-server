@@ -4,7 +4,7 @@ import org.junit.Test
 import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.junit.FakeRestServerRule
 
-class AnnotationTest {
+class AnnotationJunit4Test {
 
 
     @get:Rule val rule = FakeRestServerRule()
@@ -24,4 +24,5 @@ class AnnotationTest {
         assert(response.text == "Not found")
         assert(response.statusCode == 404)
     }
+
 }
