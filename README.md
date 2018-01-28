@@ -48,6 +48,35 @@ Take lib in ./build/libs
  app.stop();
 ```
 
+use annotation in Junit4
+```java
+public class JunitAnnotationTest {
+
+    @Rule
+    public FakeRestServerRule rule = new FakeRestServerRule();
+
+    @Test
+    @FakeRestServer(port = 7000,resourceFile = "/resource.json")
+    public void name() throws InterruptedException {
+        sleep(300);
+    }
+}
+``` 
+
+use annotation in TestNG
+
+```java
+@Listeners(FakeRestServerListener.class)
+public class TestNGAnnotationTest {
+
+        @Test
+        @FakeRestServer(port = 7000,resourceFile = "/1resource.json")
+        public void name() throws InterruptedException {
+            sleep(300);
+        }
+}
+``` 
+
 ### Required resources
 Required resources is *resource.json* and *error.json*.
 *error.json*  file of the standard response on error.
