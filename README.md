@@ -16,14 +16,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.9</version>
+  <version>0.0.10</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.9'
+compile 'ru.svnik.tests:fake-rest-server:0.0.10'
 ```
 
 Also you can build the lid by yourself.
@@ -70,7 +70,7 @@ use annotation in TestNG
 public class TestNGAnnotationTest {
 
         @Test
-        @FakeRestServer(port = 7000,resourceFile = "/1resource.json")
+        @FakeRestServer(port = 7000,resourceFile = "/resource.json")
         public void name() throws InterruptedException {
             sleep(300);
         }
