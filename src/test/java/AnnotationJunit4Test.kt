@@ -26,3 +26,24 @@ class AnnotationJunit4Test {
     }
 
 }
+
+@FakeRestServer(7000, "/resource.json")
+class AnnotationForClassJunit4Test {
+
+    @get:Rule val rule = FakeRestServerRule()
+
+    @Test
+    fun testJunitAnnotationInClass() {
+        val response = get("http://localhost:7000")
+        assert(response.text == "\"default error.json\"")
+        assert(response.statusCode == 200)
+    }
+
+    @Test
+    fun testJunitAnnotationBadResourceINClass() {
+        val response = get("http://localhost:7000/api/")
+        assert(response.text == "Not found")
+        assert(response.statusCode == 404)
+    }
+
+}
