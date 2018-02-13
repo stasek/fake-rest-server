@@ -33,9 +33,14 @@ class FakeRestServerListener : ITestListener {
     }
 
     override fun onTestStart(result: ITestResult) {
-        val FRS = result.method.constructorOrMethod.method.getAnnotation(FakeRestServer::class.java)
+        val FRS = result.method
+                .constructorOrMethod.method
+                .getAnnotation(FakeRestServer::class.java) ?: result
+                .testClass
+                .realClass
+                .getAnnotation(FakeRestServer::class.java)
         if (FRS != null) {
-            app = FakeServer(FRS!!.port, FRS.resourceFile).server()
+            app = FakeServer(FRS.port, FRS.resourceFile).server()
             logger.info("Fake Rest Server start")
         }
     }
@@ -44,7 +49,12 @@ class FakeRestServerListener : ITestListener {
     }
 
     private fun stopServer(result: ITestResult){
-        val FRS = result.method.constructorOrMethod.method.getAnnotation(FakeRestServer::class.java)
+        val FRS = result.method
+                .constructorOrMethod.method
+                .getAnnotation(FakeRestServer::class.java) ?: result
+                .testClass
+                .realClass
+                .getAnnotation(FakeRestServer::class.java)
         if (FRS != null) {
             app.stop()
             logger.info("Fake Rest Server stop")

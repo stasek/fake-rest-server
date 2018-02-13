@@ -7,14 +7,16 @@ import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.server.FakeServer
 
 
-
 class FakeRestServerRule : TestWatcher() {
     private val logger = Logger.getLogger(this::class.java)
     @Volatile
     private lateinit var app: FakeServer
 
     override fun finished(description: Description) {
-        val FRS = description.getAnnotation(FakeRestServer::class.java)
+        val FRS = description
+                .testClass
+                .getAnnotation(FakeRestServer::class.java) ?:
+        description.getAnnotation(FakeRestServer::class.java)
         if (FRS != null) {
             app.stop()
             logger.info("Fake Rest Server stop")
@@ -23,7 +25,10 @@ class FakeRestServerRule : TestWatcher() {
     }
 
     override fun starting(description: Description) {
-        val FRS = description.getAnnotation(FakeRestServer::class.java)
+        val FRS = description
+                .testClass
+                .getAnnotation(FakeRestServer::class.java) ?:
+                description.getAnnotation(FakeRestServer::class.java)
         if (FRS != null) {
             app = FakeServer(FRS.port, FRS.resourceFile).server()
             logger.info("Fake Rest Server start")

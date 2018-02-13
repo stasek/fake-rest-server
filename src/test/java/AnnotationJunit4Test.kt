@@ -3,6 +3,7 @@ import org.junit.Rule
 import org.junit.Test
 import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.junit.FakeRestServerRule
+import java.net.ConnectException
 
 class AnnotationJunit4Test {
 
@@ -23,6 +24,11 @@ class AnnotationJunit4Test {
         val response = get("http://localhost:7000/api/")
         assert(response.text == "Not found")
         assert(response.statusCode == 404)
+    }
+
+    @Test(expected = ConnectException::class)
+    fun testJunitNotAnnotation() {
+        get("http://localhost:7000/api/")
     }
 
 }
