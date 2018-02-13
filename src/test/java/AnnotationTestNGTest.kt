@@ -23,3 +23,22 @@ class AnnotationTestNGTest {
         assert(response.statusCode == 404)
     }
 }
+
+@Listeners(FakeRestServerListener::class)
+@FakeRestServer(7000, "/resource.json")
+class AnnotationForClassTestNGTest {
+
+    @org.testng.annotations.Test
+    fun testTestNGAnnotationForClass() {
+        val response = get("http://localhost:7000")
+        assert(response.text == "\"default error.json\"")
+        assert(response.statusCode == 200)
+    }
+
+    @org.testng.annotations.Test
+    fun testTestNGAnnotationBadResourceForClass() {
+        val response = get("http://localhost:7000/api")
+        assert(response.text == "Not found")
+        assert(response.statusCode == 404)
+    }
+}
