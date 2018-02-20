@@ -25,6 +25,9 @@ if (project.hasProperty("bu")) {
     }
 } else {
     version = getGitVersionLong()
+    processResources {
+        include("/error.json", "/resource.json", "/log4j.properties")
+    }
 }
 
 description = """"""
@@ -58,14 +61,17 @@ dependencies {
     }
 }
 
-task app(type: Jar) {
+task app(type: Jar, dependsOn: test) {
     manifest {
         attributes 'Implementation-Title': 'App version',
                 'Implementation-Version': version,
-                'Main-Class': 'ru.svnik.tests.server.FakeServer'
+                'Main-Class': 'ru.svnik.tests.server.Main'
     }
     baseName = project.name + '-app'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
     with jar
 }
 
@@ -93,6 +99,13 @@ task testNG(type: Test) {
     }
     useTestNG()
 }
+
+jar {
+    if (project.hasProperty("bu")) {
+        exclude("ru/svnik/tests/server/Main*")
+    }
+}
+
 
 publish {
     groupId = group

@@ -17,14 +17,7 @@ class FakeServer(private val port: Int = 7000, private val resourceFilePath: Str
 
     companion object {
 
-        private val ip4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val port = System.getProperty("port", "7000").toInt()
-            val resourceFile = System.getProperty("/resourceFile", "/resource.json")
-            FakeServer(port, resourceFile).server()
-        }
+        private const val ip4Regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
 
         @JvmStatic
         fun thisInetAddresses(): List<String> {
