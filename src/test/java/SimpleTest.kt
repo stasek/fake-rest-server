@@ -1,9 +1,13 @@
 import io.javalin.Context
+import khttp.get
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import ru.svnik.tests.elements.ContentType
+import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.elements.ResourceEntity
+import ru.svnik.tests.junit.FakeRestServerRule
 import ru.svnik.tests.utils.toListObjects
 import utils.*
 
@@ -187,12 +191,34 @@ class SimpleTest {
         val ctx = mock(Context::class.java)
         `when` (ctx.splats()).thenReturn(arrayOf("12"))
 
-        val resource = ResourceEntity(pathToFile = "/robots.json",
+        val resource = ResourceEntity(resource = "/",
+                pathToFile = "/robots_no_exist.json",
                 contentType = ContentType.JSON,
                 code = 200)
 
         ctx.fullResult(resource)
     }
+
+
+    @get:Rule val rule = FakeRestServerRule()
+
+
+    @Test
+    @FakeRestServer(8888, "/res.json")
+    fun fullResultTestExistArray() {
+        val response = get("http://localhost:8888/api/robot/12/")
+        assert(response.text == "{\"id\":12,\"name\":\"Bender\",\"last_name\":\"Rodriguez\",\"age\":\"22\"}")
+        assert(response.statusCode == 200)
+    }
+
+    @Test
+    @FakeRestServer(8888, "/res.json")
+    fun fullResultTestExistArrayFewSplat() {
+        val response = get("http://localhost:8888/api/factory/31/robot/21/last/51/")
+        assert(response.text == "{\"id\":51,\"name\":\"Maria\",\"last_name\":\"Rodriguez\",\"age\":\"23\"}")
+        assert(response.statusCode == 200)
+    }
+
 
 
 }

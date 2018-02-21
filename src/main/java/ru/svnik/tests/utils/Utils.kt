@@ -2,7 +2,6 @@ package ru.svnik.tests.utils
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import com.google.gson.stream.JsonReader
 import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Entity
@@ -16,7 +15,7 @@ internal fun <T : Entity> String.toListObjects(): List<T> {
     return Gson().fromJson(this, listType)
 }
 
-internal fun String.toListObject(): List<JsonElement> {
+internal fun String.toListJsonElements(): List<JsonElement> {
     val jsonArray = JsonParser().parse(this).asJsonArray
     return jsonArray.toList()
 }
@@ -32,14 +31,14 @@ internal fun readFileAsStream(name: String): InputStream {
 
 internal fun readFileAsString(name: String): String {
     IOUtils.toString(readFileAsStream(name), "UTF-8")
-            .toListObject()
+            .toListJsonElements()
             .forEach { println(it) }
     return IOUtils.toString(readFileAsStream(name), "UTF-8")
 }
 
 internal fun getOneObjectByID(name: String, id: Int): String {
     return (IOUtils.toString(readFileAsStream(name), "UTF-8")
-            .toListObject()
+            .toListJsonElements()
             .firstOrNull { it.toString().contains(Regex("\"id\":\\s*$id[,\\n]")) } ?: "").toString()
 }
 

@@ -90,6 +90,9 @@ test {
     testLogging {
         events 'started', 'passed'
     }
+    processResources {
+        include("/robots.json", "/res.json", "/log4j.properties")
+    }
     useJUnit()
 }
 
