@@ -94,9 +94,10 @@ junitPlatform {
     filters {
         engines {
             include 'junit-jupiter'
-            include 'junit-vintage'
+            //include 'junit-vintage'
         }
         logManager 'org.apache.logging.log4j.jul.LogManager'
+        enableStandardTestTask true
     }
 }
 
