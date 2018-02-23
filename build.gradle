@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
     }
 
 }
@@ -14,6 +15,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'kotlin'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'org.junit.platform.gradle.plugin'
 
 group = 'ru.svnik.tests'
 //version = getGitVersionLong()
@@ -51,6 +53,8 @@ dependencies {
     compile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.testng', name: 'testng', version: '6.13.1'
     compile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.1.0'
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.1.0'
+    testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.1.0'
     testCompile group: 'khttp', name: 'khttp', version: '0.1.0'
     testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.2.21'
     testCompile 'org.junit.platform:junit-platform-gradle-plugin:1.1.0-M1'
@@ -86,6 +90,15 @@ task lib(type: Jar, dependsOn: test) {
     with jar
 }
 
+junitPlatform {
+    filters {
+        engines {
+            include 'junit-jupiter'
+            include 'junit-vintage'
+        }
+        logManager 'org.apache.logging.log4j.jul.LogManager'
+    }
+}
 
 test {
     testLogging {
@@ -94,7 +107,7 @@ test {
     processResources {
         include("/robots.json", "/res.json", "/log4j.properties")
     }
-    useJUnit()
+
 }
 
 task testNG(type: Test) {
@@ -103,6 +116,7 @@ task testNG(type: Test) {
     }
     useTestNG()
 }
+
 
 jar {
     if (project.hasProperty("bu")) {
