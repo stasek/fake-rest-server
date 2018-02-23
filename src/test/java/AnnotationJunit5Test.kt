@@ -1,10 +1,10 @@
 import khttp.get
 import org.junit.jupiter.api.Test
-import ru.svnik.tests.elements.FakeRestServer
+import org.junit.jupiter.api.Assertions.assertThrows
+import ru.svnik.tests.junit5.FakeRestServer
+import java.net.ConnectException
 
 class AnnotationJunit5Test {
-
-
 
     @Test
     @FakeRestServer(7000, "/resource.json")
@@ -22,10 +22,10 @@ class AnnotationJunit5Test {
         assert(response.statusCode == 404)
     }
 
-//    @Test(expected = ConnectException::class)
-//    fun testJunitNotAnnotation() {
-//        get("http://localhost:7000/api/")
-//    }
+    @Test()
+    fun testJunitNotAnnotation() {
+        assertThrows(ConnectException::class.java ,  {get("http://localhost:7000/api/")})
+    }
 
 }
 
