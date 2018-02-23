@@ -16,14 +16,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.11</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.10'
+compile 'ru.svnik.tests:fake-rest-server:0.0.11'
 ```
 
 Also you can build the lid by yourself.
@@ -48,8 +48,10 @@ Take lib in ./build/libs
  app.stop();
 ```
 
-use annotation in Junit4
+###use annotation in Junit4
 ```java
+import ru.svnik.tests.elements.FakeRestServer;
+
 public class JunitAnnotationTest {
 
     @Rule
@@ -63,9 +65,25 @@ public class JunitAnnotationTest {
 }
 ``` 
 
-use annotation in TestNG
+###use annotation in Junit5
+```java
+import ru.svnik.tests.junit5.FakeRestServer;
+
+public class JunitAnnotationTest {
+
+    @Test
+    @FakeRestServer(port = 7000,resourceFile = "/resource.json")
+    public void name() throws InterruptedException {
+        sleep(300);
+    }
+}
+``` 
+
+###use annotation in TestNG
 
 ```java
+import ru.svnik.tests.elements.FakeRestServer;
+
 @Listeners(FakeRestServerListener.class)
 public class TestNGAnnotationTest {
 
@@ -121,6 +139,6 @@ If you want to use the server as a stand-alone application, use the app profile.
 ```sh
 gradle app
 
-java -Dport=80 -Dresourcefile="/resource.json" -jar fake-rest-server-app-version-/d-hash.jar
+java -Dport=80 -Dresourcefile="/resource.json" -jar fake-rest-server-app-version-hash.jar
 ```
 Unfortunately you have to change the files in the jar.
