@@ -10,8 +10,7 @@ import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.junit.FakeRestServerRule
 import ru.svnik.tests.utils.toListObjects
 import utils.*
-
-
+import kotlin.test.assertFalse
 
 
 class SimpleTest {
@@ -125,6 +124,50 @@ class SimpleTest {
         `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
         assert(ctx.checkBody(resource))
     }
+
+    @Test
+    fun checkBodyJsonIgnoreCaseTest() {
+        val body =
+                "{\n" +
+                        "\t\"login\": \"admin\",\n" +
+                        "      \"password\": \"killAll\",\n" +
+                        "  \"value\": {\n" +
+                        "    \"test\": \"pass\"\n" +
+                        "  }\n" +
+                        "}"
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val map = HashMap<String, String>()
+        map["login"] = "admin"
+        map["password"] = "Killall"
+        `when`(ctx.body()).thenReturn(body)
+        `when`(resource.requiredFields).thenReturn(map)
+        `when`(resource.fieldsIgnoreCase).thenReturn(true)
+        `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
+        assert(ctx.checkBody(resource))
+    }
+
+    @Test
+    fun checkBodyJsonBadIgnoreCaseTest() {
+        val body =
+                "{\n" +
+                        "\t\"login\": \"admin\",\n" +
+                        "      \"password\": \"killAll\",\n" +
+                        "  \"value\": {\n" +
+                        "    \"test\": \"pass\"\n" +
+                        "  }\n" +
+                        "}"
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val map = HashMap<String, String>()
+        map["login"] = "admin"
+        map["password"] = "Killall"
+        `when`(ctx.body()).thenReturn(body)
+        `when`(resource.requiredFields).thenReturn(map)
+        `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
+        assertFalse(ctx.checkBody(resource))
+    }
+
 
     @Test
     fun checkQueryTest() {

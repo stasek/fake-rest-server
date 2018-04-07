@@ -103,15 +103,17 @@ internal fun Context.bodyToInfo(): Map<String, String> {
 }
 
 private fun Context.bodyHandler(resource: ResourceEntity): Boolean {
-    val bodyMap = when (this.contentType()) {
+    return when (this.contentType()) {
         ContentType.JSON.value -> {
-            this.bodyToMap()
+            val bodyMap =  this.bodyToMap()
+            resource.requiredFields.all { bodyMap[it.key].toString().equals (it.value, resource.fieldsIgnoreCase) }
         }
         else -> {
-            this.bodyToInfo()
+            val bodyMap =  this.bodyToInfo()
+            resource.requiredFields.all { bodyMap[it.key] == it.value }
         }
     }
-    return (resource.requiredFields.all { bodyMap[it.key] == it.value })
+
 }
 
 

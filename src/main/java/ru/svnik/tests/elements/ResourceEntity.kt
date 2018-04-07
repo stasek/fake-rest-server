@@ -16,6 +16,8 @@ class ResourceEntity(
         val contentType: ContentType = ContentType.JSON,
         @SerializedName("required_field")
         val requiredFields: HashMap<String, String> = HashMap(),
+        @SerializedName("field_ignore_case")
+        val fieldsIgnoreCase: Boolean = false,
         @SerializedName("required_headers")
         val requiredHeaders: HashMap<String, String> = HashMap(),
         @SerializedName("path_to_error")
