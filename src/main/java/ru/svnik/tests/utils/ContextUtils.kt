@@ -3,6 +3,7 @@ package utils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.javalin.Context
+import io.restassured.path.json.JsonPath
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.ResourceEntity
@@ -94,6 +95,14 @@ internal fun Context.bodyToMap(): Map<String, Any> {
     return Gson().fromJson(body(), mapType)
 }
 
+internal fun Context.deepSearchInBody(path: String): String {
+    if (body().isEmpty() || this.contentType() != ContentType.JSON.value) {
+        logger.trace("Context body size is " + body().length.toString())
+        return String()
+    }
+    return JsonPath.from(body()).getString(path)
+}
+
 internal fun Context.bodyToInfo(): Map<String, String> {
     val byteBody = bodyAsBytes()
     val mapInfo = HashMap<String, String>()
@@ -105,8 +114,9 @@ internal fun Context.bodyToInfo(): Map<String, String> {
 private fun Context.bodyHandler(resource: ResourceEntity): Boolean {
     return when (this.contentType()) {
         ContentType.JSON.value -> {
-            val bodyMap =  this.bodyToMap()
-            resource.requiredFields.all { bodyMap[it.key].toString().equals (it.value, resource.fieldsIgnoreCase) }
+            resource.requiredFields.all {
+                this.deepSearchInBody(it.key).equals(it.value, resource.fieldsIgnoreCase)
+            }
         }
         else -> {
             val bodyMap =  this.bodyToInfo()

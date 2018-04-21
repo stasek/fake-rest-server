@@ -16,14 +16,14 @@ This server is a stub for testing RestApi integration.
 <dependency>
   <groupId>ru.svnik.tests</groupId>
   <artifactId>fake-rest-server</artifactId>
-  <version>0.0.12</version>
+  <version>0.0.13</version>
   <type>pom</type>
 </dependency>
 ...
 ```
 ### gradle
 ```gradle
-compile 'ru.svnik.tests:fake-rest-server:0.0.12'
+compile 'ru.svnik.tests:fake-rest-server:0.0.13'
 ```
 
 Also you can build the lid by yourself.
@@ -112,6 +112,9 @@ Required resources is *resource.json* and *error.json*.
     "method": ["get"],
     "path_to_error": "/empty.json",
     "error_code": 200,
+    "required_field":{
+      "info.old_info.info[1].name": "server"
+    },
     "required_headers": {
       "token": "123456789"
     },

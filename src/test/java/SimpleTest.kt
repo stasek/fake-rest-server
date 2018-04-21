@@ -148,6 +148,61 @@ class SimpleTest {
     }
 
     @Test
+    fun checkBodyJsonDeepSearch() {
+        val body =
+                "{\n" +
+                        "\t\"login\": \"admin\",\n" +
+                        "      \"password\": \"killAll\",\n" +
+                        "  \"value\": {\n" +
+                        "    \"test\": \"pass\"\n" +
+                        "  }\n" +
+                        "}"
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val map = HashMap<String, String>()
+        map["value.test"] = "pass"
+        //map["password"] = "Killall"
+        `when`(ctx.body()).thenReturn(body)
+        `when`(resource.requiredFields).thenReturn(map)
+        `when`(resource.fieldsIgnoreCase).thenReturn(true)
+        `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
+        assert(ctx.checkBody(resource))
+    }
+
+    @Test
+    fun checkBodyJsonDeepSearchWithArray() {
+        val body =
+                "{\n" +
+                        "  \"message\": \"Hello dude!\",\n" +
+                        "  \"info\": {\n" +
+                        "    \"name\": \"fake server\",\n" +
+                        "    \"version\": \"dev\",\n" +
+                        "    \"old_info\": {\n" +
+                        "      \"info\": [\n" +
+                        "        {\n" +
+                        "          \"name\": \"fake server\",\n" +
+                        "          \"version\": \"test\"\n" +
+                        "        },\n" +
+                        "        {\n" +
+                        "          \"name\": \"server\",\n" +
+                        "          \"version\": \"begin\"\n" +
+                        "        }\n" +
+                        "      ]\n" +
+                        "    }\n" +
+                        "  }\n" +
+                        "}"
+        val ctx = mock(Context::class.java)
+        val resource = mock(ResourceEntity::class.java)
+        val map = HashMap<String, String>()
+        map["info.old_info.info[1].name"] = "server"
+        `when`(ctx.body()).thenReturn(body)
+        `when`(resource.requiredFields).thenReturn(map)
+        `when`(resource.fieldsIgnoreCase).thenReturn(true)
+        `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
+        assert(ctx.checkBody(resource))
+    }
+
+    @Test
     fun checkBodyJsonBadIgnoreCaseTest() {
         val body =
                 "{\n" +
