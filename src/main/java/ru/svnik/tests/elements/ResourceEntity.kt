@@ -2,6 +2,7 @@ package ru.svnik.tests.elements
 
 import com.google.gson.annotations.SerializedName
 import ru.svnik.tests.utils.getOneObjectByID
+import ru.svnik.tests.utils.getOneObjectBySplats
 import ru.svnik.tests.utils.readFileAsStream
 import ru.svnik.tests.utils.readFileAsString
 import java.io.InputStream
@@ -45,7 +46,12 @@ class ResourceEntity(
         return readFileAsString(this.pathToFile)
     }
 
+    @Deprecated("Will be delete")
     internal fun getOneObjectByIDFromFile(id: Int): String {
         return getOneObjectByID(this.pathToFile, id)
+    }
+
+    internal fun getOneObjectBySplatsFromFile(splatsValue: List<String>): String {
+        return getOneObjectBySplats(this.pathToFile, this.splats, splatsValue)
     }
 }

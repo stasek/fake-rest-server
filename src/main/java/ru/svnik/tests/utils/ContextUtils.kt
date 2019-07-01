@@ -51,7 +51,7 @@ internal fun Context.fullResult(resource: ResourceEntity): Context {
                 .contentType(resource.contentType.value)
                 .status(resource.code)
     } else {
-        val struct =  resource.getOneObjectByIDFromFile(this.splats().last().toInt())
+        val struct = resource.getOneObjectBySplatsFromFile(this.splats())
         if (struct.isNotEmpty()) {
             this.result(struct)
                     .contentType(resource.contentType.value)
@@ -119,7 +119,7 @@ private fun Context.bodyHandler(resource: ResourceEntity): Boolean {
             }
         }
         else -> {
-            val bodyMap =  this.bodyToInfo()
+            val bodyMap = this.bodyToInfo()
             resource.requiredFields.all { bodyMap[it.key] == it.value }
         }
     }
