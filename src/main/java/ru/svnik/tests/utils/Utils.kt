@@ -1,6 +1,8 @@
 package ru.svnik.tests.utils
 
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import org.apache.commons.io.IOUtils
 import org.apache.log4j.Logger
@@ -36,10 +38,29 @@ internal fun readFileAsString(name: String): String {
     return IOUtils.toString(readFileAsStream(name), "UTF-8")
 }
 
+@Deprecated("Will be delete")
 internal fun getOneObjectByID(name: String, id: Int): String {
     return (IOUtils.toString(readFileAsStream(name), "UTF-8")
             .toListJsonElements()
-            .firstOrNull { it.toString().contains(Regex("\"id\":\\s*$id[,\\n]")) } ?: "").toString()
+            .firstOrNull {
+                it.toString()
+                        .contains(Regex("\"id\":\\s*$id[,\\n]"))
+            } ?: "").toString()
+}
+
+internal fun getOneObjectBySplats(name: String,
+                                  splats: List<String>,
+                                  splatsValue: List<String>): String {
+    val splatsKeyValue = splats.zip(splatsValue)
+    return (IOUtils.toString(readFileAsStream(name), "UTF-8")
+            .toListJsonElements()
+            .firstOrNull {
+                splatsKeyValue
+                        .all { kv ->
+                            it.toString()
+                                    .contains(Regex("\"${kv.first}\":\\s*(\"?)${kv.second}(\\1)[}|,]"))
+                        }
+            } ?: "").toString()
 }
 
 

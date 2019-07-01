@@ -8,9 +8,10 @@
     "error_code": 404
   },
   {
-    "resource": "/api/factory/*/robot/*/last/*/",
+    "resource": "/api/last/*/robot/*/",
     "code": 200,
     "path": "/robots.json",
-    "method": ["get"]
+    "method": ["get"],
+    "splats": ["last_name", "id"]
   }
 ]

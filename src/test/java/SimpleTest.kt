@@ -8,8 +8,7 @@ import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.junit.FakeRestServerRule
-import ru.svnik.tests.utils.toListObjects
-import utils.*
+import ru.svnik.tests.utils.*
 import kotlin.test.assertFalse
 
 
@@ -228,9 +227,9 @@ class SimpleTest {
     fun checkQueryTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
-        val mapCtx = HashMap<String, Array<String>>()
-        mapCtx["name"] = arrayOf("admin")
-        mapCtx["last_name"] = arrayOf("Petrov", "Ivanov")
+        val mapCtx = HashMap<String, List<String>>()
+        mapCtx["name"] = listOf("admin")
+        mapCtx["last_name"] = listOf("Petrov", "Ivanov")
         val mapRes = HashMap<String, List<String>>()
         mapRes["name"] = listOf("admin")
         mapRes["last_name"] = listOf("Petrov", "Ivanov")
@@ -245,9 +244,9 @@ class SimpleTest {
     fun checkQueryNullResTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
-        val mapCtx = HashMap<String, Array<String>>()
-        mapCtx["name"] = arrayOf("admin")
-        mapCtx["last_name"] = arrayOf("Petrov", "Ivanov")
+        val mapCtx = HashMap<String, List<String>>()
+        mapCtx["name"] = listOf("admin")
+        mapCtx["last_name"] = listOf("Petrov", "Ivanov")
         val mapRes = HashMap<String, List<String>>()
         `when`(ctx.queryParamMap())
                 .thenReturn(mapCtx)
@@ -260,8 +259,8 @@ class SimpleTest {
     fun checkQueryNullCtxTest() {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
-        val mapCtx = HashMap<String, Array<String>>()
-        mapCtx["name"] = arrayOf("admin")
+        val mapCtx = HashMap<String, List<String>>()
+        mapCtx["name"] = listOf("admin")
         val mapRes = HashMap<String, List<String>>()
         mapRes["name"] = listOf("admin")
         mapRes["last_name"] = listOf("Petrov", "Ivanov")
@@ -275,7 +274,7 @@ class SimpleTest {
     @Test(expected = NullPointerException::class)
     fun fullResultTestNullSplat() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(arrayOf())
+        `when` (ctx.splats()).thenReturn(listOf())
 
         val resource = ResourceEntity(pathToFile = "/robots.json",
                 contentType = ContentType.JSON,
@@ -287,7 +286,7 @@ class SimpleTest {
     @Test(expected = IllegalStateException::class)
     fun fullResultTestMotArray() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(arrayOf("12"))
+        `when` (ctx.splats()).thenReturn(listOf("12"))
 
         val resource = ResourceEntity(resource = "/",
                 pathToFile = "/robots_no_exist.json",

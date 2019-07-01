@@ -1,7 +1,6 @@
 package ru.svnik.tests.server
 
 import io.javalin.Javalin
-import io.javalin.LogLevel
 import org.apache.log4j.Logger
 import ru.svnik.tests.elements.Enums
 import ru.svnik.tests.utils.ResourceList
