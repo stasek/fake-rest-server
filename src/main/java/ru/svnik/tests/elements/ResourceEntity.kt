@@ -27,7 +27,9 @@ class ResourceEntity(
         @SerializedName("error_content_type")
         val errorContentType: ContentType = ContentType.JSON,
         @SerializedName("required_queries")
-        val requiredQueries: HashMap<String, List<String>> = HashMap()
+        val requiredQueries: HashMap<String, List<String>> = HashMap(),
+        @SerializedName("splats")
+        val splats: List<String> = listOf("id")
 ) : Entity() {
 
     override fun toString(): String {
