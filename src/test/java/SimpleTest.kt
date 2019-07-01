@@ -8,7 +8,8 @@ import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.junit.FakeRestServerRule
-import ru.svnik.tests.utils.*
+import ru.svnik.tests.utils.toListObjects
+import utils.*
 import kotlin.test.assertFalse
 
 
@@ -274,7 +275,7 @@ class SimpleTest {
     @Test(expected = NullPointerException::class)
     fun fullResultTestNullSplat() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(listOf())
+        `when`(ctx.splats()).thenReturn(listOf())
 
         val resource = ResourceEntity(pathToFile = "/robots.json",
                 contentType = ContentType.JSON,
@@ -286,7 +287,7 @@ class SimpleTest {
     @Test(expected = IllegalStateException::class)
     fun fullResultTestMotArray() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(listOf("12"))
+        `when`(ctx.splats()).thenReturn(listOf("12"))
 
         val resource = ResourceEntity(resource = "/",
                 pathToFile = "/robots_no_exist.json",
@@ -297,7 +298,8 @@ class SimpleTest {
     }
 
 
-    @get:Rule val rule = FakeRestServerRule()
+    @get:Rule
+    val rule = FakeRestServerRule()
 
 
     @Test
@@ -315,7 +317,6 @@ class SimpleTest {
         assert(response.text == "{\"id\":51,\"name\":\"Maria\",\"last_name\":\"Rodriguez\",\"age\":\"23\"}")
         assert(response.statusCode == 200)
     }
-
 
 
 }
