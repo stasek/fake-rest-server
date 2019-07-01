@@ -8,8 +8,10 @@ import ru.svnik.tests.elements.ContentType
 import ru.svnik.tests.elements.FakeRestServer
 import ru.svnik.tests.elements.ResourceEntity
 import ru.svnik.tests.junit.FakeRestServerRule
-import ru.svnik.tests.utils.*
+import ru.svnik.tests.utils.toListObjects
+import utils.*
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 
 class SimpleTest {
@@ -35,7 +37,7 @@ class SimpleTest {
                 "    }\n" +
                 "  }]"
         val objects = body.toListObjects<ResourceEntity>()
-        assert(objects.size == 2)
+        assertTrue(objects.size == 2)
     }
 
     @Test
@@ -52,8 +54,8 @@ class SimpleTest {
                 "    }\n" +
                 "  }" + "]"
         val objects = body.toListObjects<ResourceEntity>()
-        assert(objects[0].requiredFields["login"] == "admin")
-        assert(objects[0].requiredFields["password"] == "killall")
+        assertTrue(objects[0].requiredFields["login"] == "admin")
+        assertTrue(objects[0].requiredFields["password"] == "killall")
     }
 
 
@@ -65,9 +67,9 @@ class SimpleTest {
                         "'pass':'12345'}")
         `when`(ctx.contentType()).thenReturn("application/json")
         val bodyMap = ctx.bodyToMap()
-        assert(bodyMap["login"] == "admin")
-        assert(bodyMap.size == 2)
-        assert(bodyMap["pass"] == "12345")
+        assertTrue(bodyMap["login"] == "admin")
+        assertTrue(bodyMap.size == 2)
+        assertTrue(bodyMap["pass"] == "12345")
     }
 
     @Test
@@ -76,7 +78,7 @@ class SimpleTest {
         `when`(ctx.contentType()).thenReturn("!!!")
         `when`(ctx.body()).thenReturn("")
         val bodyMap = ctx.bodyToMap()
-        assert(bodyMap.isEmpty())
+        assertTrue(bodyMap.isEmpty())
     }
 
     @Test
@@ -84,7 +86,7 @@ class SimpleTest {
         val ctx = mock(Context::class.java)
         `when`(ctx.body()).thenReturn("")
         val bodyMap = ctx.bodyToMap()
-        assert(bodyMap.isEmpty())
+        assertTrue(bodyMap.isEmpty())
     }
 
     @Test
@@ -92,7 +94,7 @@ class SimpleTest {
         val ctx = mock(Context::class.java)
         `when`(ctx.bodyAsBytes()).thenReturn(ByteArray(10))
         val bodyInfo = ctx.bodyToInfo()
-        assert(bodyInfo["Size"] == "10")
+        assertTrue(bodyInfo["Size"] == "10")
     }
 
     @Test
@@ -100,7 +102,7 @@ class SimpleTest {
         val ctx = mock(Context::class.java)
         val resource = mock(ResourceEntity::class.java)
         `when`(ctx.bodyAsBytes()).thenReturn(ByteArray(10))
-        assert(ctx.checkBody(resource))
+        assertTrue(ctx.checkBody(resource))
     }
 
     @Test
@@ -121,7 +123,7 @@ class SimpleTest {
         `when`(ctx.body()).thenReturn(body)
         `when`(resource.requiredFields).thenReturn(map)
         `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
-        assert(ctx.checkBody(resource))
+        assertTrue(ctx.checkBody(resource))
     }
 
     @Test
@@ -143,7 +145,7 @@ class SimpleTest {
         `when`(resource.requiredFields).thenReturn(map)
         `when`(resource.fieldsIgnoreCase).thenReturn(true)
         `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
-        assert(ctx.checkBody(resource))
+        assertTrue(ctx.checkBody(resource))
     }
 
     @Test
@@ -165,7 +167,7 @@ class SimpleTest {
         `when`(resource.requiredFields).thenReturn(map)
         `when`(resource.fieldsIgnoreCase).thenReturn(true)
         `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
-        assert(ctx.checkBody(resource))
+        assertTrue(ctx.checkBody(resource))
     }
 
     @Test
@@ -198,7 +200,7 @@ class SimpleTest {
         `when`(resource.requiredFields).thenReturn(map)
         `when`(resource.fieldsIgnoreCase).thenReturn(true)
         `when`(ctx.contentType()).thenReturn(ContentType.JSON.value)
-        assert(ctx.checkBody(resource))
+        assertTrue(ctx.checkBody(resource))
     }
 
     @Test
@@ -237,7 +239,7 @@ class SimpleTest {
                 .thenReturn(mapCtx)
         `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
-        assert(ctx.checkQueries(resource))
+        assertTrue(ctx.checkQueries(resource))
     }
 
     @Test
@@ -252,7 +254,7 @@ class SimpleTest {
                 .thenReturn(mapCtx)
         `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
-        assert(ctx.checkQueries(resource))
+        assertTrue(ctx.checkQueries(resource))
     }
 
     @Test
@@ -268,13 +270,13 @@ class SimpleTest {
                 .thenReturn(mapCtx)
         `when`(resource.requiredQueries)
                 .thenReturn(mapRes)
-        assert(!ctx.checkQueries(resource))
+        assertFalse(ctx.checkQueries(resource))
     }
 
     @Test(expected = NullPointerException::class)
     fun fullResultTestNullSplat() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(listOf())
+        `when`(ctx.splats()).thenReturn(listOf())
 
         val resource = ResourceEntity(pathToFile = "/robots.json",
                 contentType = ContentType.JSON,
@@ -286,7 +288,7 @@ class SimpleTest {
     @Test(expected = IllegalStateException::class)
     fun fullResultTestMotArray() {
         val ctx = mock(Context::class.java)
-        `when` (ctx.splats()).thenReturn(listOf("12"))
+        `when`(ctx.splats()).thenReturn(listOf("12"))
 
         val resource = ResourceEntity(resource = "/",
                 pathToFile = "/robots_no_exist.json",
@@ -297,25 +299,25 @@ class SimpleTest {
     }
 
 
-    @get:Rule val rule = FakeRestServerRule()
+    @get:Rule
+    val rule = FakeRestServerRule()
 
 
     @Test
     @FakeRestServer(8888, "/res.json")
     fun fullResultTestExistArray() {
         val response = get("http://localhost:8888/api/robot/12/")
-        assert(response.text == "{\"id\":12,\"name\":\"Bender\",\"last_name\":\"Rodriguez\",\"age\":\"22\"}")
-        assert(response.statusCode == 200)
+        assertTrue(response.text == "{\"name\":\"Bender\",\"last_name\":\"Rodriguez\",\"age\":\"22\",\"id\":12}")
+        assertTrue(response.statusCode == 200)
     }
 
     @Test
     @FakeRestServer(8888, "/res.json")
     fun fullResultTestExistArrayFewSplat() {
-        val response = get("http://localhost:8888/api/factory/31/robot/21/last/51/")
-        assert(response.text == "{\"id\":51,\"name\":\"Maria\",\"last_name\":\"Rodriguez\",\"age\":\"23\"}")
-        assert(response.statusCode == 200)
+        val response = get("http://localhost:8888/api/last/Rodriguez/robot/51/")
+        assertTrue (response.text == "{\"id\":51,\"name\":\"Maria\",\"last_name\":\"Rodriguez\",\"age\":\"23\"}")
+        assertTrue (response.statusCode == 200)
     }
-
 
 
 }
